@@ -347,9 +347,9 @@ _to_string_exp_precision = |num_frac_digits, a| (
         let log10 = (log2.to_F64 * Math::log10(2.0)).to_I64 - 1;
         let a = if log10 == 0 { a }
         else if log10 > 0 {
-            a / BigFloat::_ten.pow_by_U64(log10.to_U64)
+            a / BigFloat::_ten.set_prec(a.get_prec).pow_by_U64(log10.to_U64)
         } else {
-            a * BigFloat::_ten.pow_by_U64((-log10).to_U64)
+            a * BigFloat::_ten.set_prec(a.get_prec).pow_by_U64((-log10).to_U64)
         };
         loop(
             (a, log10), |(a, log10)|
