@@ -40,6 +40,8 @@ It is interpreted as `mantissa * 2 ^ exponent`.
 
 ### `impl Minilib.Math.BigFloat::BigFloat : Std::FromString`
 
+Converts a string to BigFloat with the precision estimated from the string.
+
 ### `impl Minilib.Math.BigFloat::BigFloat : Std::LessThan`
 
 ### `impl Minilib.Math.BigFloat::BigFloat : Std::LessThanOrEq`
@@ -62,7 +64,7 @@ It is interpreted as `mantissa * 2 ^ exponent`.
 
 Calculates approximation of `log2(a.abs)`.
 
-### `_from_string : Std::String -> Std::Result Std::String Minilib.Math.BigFloat::BigFloat`
+### `_from_string_precision : Std::String -> Std::Option Std::I64 -> Std::Result Std::String Minilib.Math.BigFloat::BigFloat`
 
 ### `_get_num_frac_digits : Minilib.Math.BigFloat::BigFloat -> Std::I64`
 
@@ -99,6 +101,10 @@ Gets a BigInt that represents the smallest change in the mantissa of this BigInt
 ### `from_F64 : Std::F64 -> Minilib.Math.BigFloat::BigFloat`
 
 Converts F64 to BigFloat.
+
+### `from_string_precision : Std::String -> Std::I64 -> Std::Result Std::String Minilib.Math.BigFloat::BigFloat`
+
+Converts a string to BigFloat with the precision specified in base 10.
 
 ### `get_prec : Minilib.Math.BigFloat::BigFloat -> Std::I64`
 
