@@ -103,6 +103,14 @@ NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
 
 `BigInt::from_U64(u64)` creates new BigInt object from `u64`.
 
+### `generate_bigint : Std::I64 -> Random::Random -> (Random::Random, Minilib.Math.BigInt::BigInt)`
+
+Generates random BigInt `r` of specified bit length.
+
+### `generate_bigint_range : Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt -> Random::Random -> (Random::Random, Minilib.Math.BigInt::BigInt)`
+
+Generates random BigInt `r` such that `begin <= r && r < end`.
+
 ### `is_even : Minilib.Math.BigInt::BigInt -> Std::Bool`
 
 `a.is_even` returns true iff `a` is an even number.

@@ -1,5 +1,6 @@
 module BigintTest;
 
+import Random;
 
 import Minilib.Math.BigInt;
 import Minilib.Text.StringEx;
@@ -335,6 +336,49 @@ test_to_bytes = (
     )
 );
 
+test_generate_bigint: TestCase;
+test_generate_bigint = (
+    make_table_test("test_generate_bigint",
+        [
+            (123, 1),
+            (124, 2),
+            (125, 3),
+            (234, 99),
+            (235, 100),
+            (345, 500),
+            (346, 42),
+
+        ],
+        |(seed, bit_len)|
+        let random = Random::init_by_seed(seed.to_U64);
+        let (random, n) = random.generate_bigint(bit_len);
+        //println("n=" + n.to_string).lift;;
+        assert_equal("bit_length", bit_len, n.bit_length.to_I64);;
+        pure()
+    )
+);
+
+test_generate_bigint_range: TestCase;
+test_generate_bigint_range = (
+    make_table_test("test_generate_bigint_range",
+        [
+            (123, "0", "546095267330275997753464520"),
+            (234, "-7330275997753464520", "123456546095267330275997753464520"),
+            (345, "0", "1"),
+
+        ],
+        |(seed, begin, end)|
+        let random = Random::init_by_seed(seed.to_U64);
+        let begin: BigInt = *from_string(begin).from_result;
+        let end: BigInt = *from_string(end).from_result;
+        let (random, n) = random.generate_bigint_range(begin, end);
+        //println("n=" + n.to_string).lift;;
+        assert_true("begin", begin <= n);;
+        assert_true("end", n < end);;
+        pure()
+    )
+);
+
 main: IO ();
 main = (
     //if true { test_perf };
@@ -355,6 +399,8 @@ main = (
         test_shift_right,
         test_from_bytes,
         test_to_bytes,
+        test_generate_bigint,
+        test_generate_bigint_range,
         TestCase::empty
     ]
     .run_test_driver

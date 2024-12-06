@@ -2,6 +2,7 @@
 module Minilib.Math.BigInt;
 
 import Math;
+import Random;
 
 import Minilib.Common.Assert;
 import Minilib.Math.BigNat;
@@ -296,3 +297,46 @@ repeat_by_BigInt = |op, x, a, n| (
         continue $ (x, op(a, a), n.shift_right(1_U64))
     )
 );
+
+    // Generates random BigInt `r` of specified bit length.
+    generate_bigint:  I64 -> Random -> (Random, BigInt);
+    generate_bigint = |bit_length, random| (
+        assert_lazy(|_| "invalid bit_length", bit_length >= 1) $ |_|
+        let begin: BigInt = one.shift_left((bit_length - 1).to_U64);
+        let end: BigInt = one.shift_left(bit_length.to_U64);
+        random.generate_bigint_range(begin, end)
+    );
+
+    // Generates random BigInt `r` such that `begin <= r && r < end`.
+    generate_bigint_range: BigInt -> BigInt -> Random -> (Random, BigInt);
+    generate_bigint_range = |begin, end, random| (
+        if begin > end {
+            random.generate_bigint_range(end, begin)      // swap range and retry
+        };
+        let n = end - begin;
+        assert_lazy(|_| "invalid range", n > zero) $ |_|
+        let size = n.@nat.get_size;
+        let (random, nat) = loop(
+            (random, [], 0), |(random, nat, i)|
+            let (random, u64) = random.generate_U64;
+            if i == size - 1 {
+                let m = n.@nat.@(size - 1).to_U64;
+                // choose 0..m uniformly
+                let u64 = u64 / (U64::maximum / (m + 1_U64));
+                if u64 > m {
+                    continue $ (random, nat, i)     // try again
+                };
+                let nat = nat.push_back(u64.to_U32);
+                break $ (random, nat)
+            };
+            let (_, rem) = BigNat::_divmod_base(u64);
+            let nat = nat.push_back(rem.to_U32);
+            continue $ (random, nat, i + 1)
+        );
+        let r = BigInt::make(1, nat);
+        if r >= n {
+            random.generate_bigint_range(begin, end)      // try again
+        };
+        let r = begin + r;
+        (random, r)
+    );
