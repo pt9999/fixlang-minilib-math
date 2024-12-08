@@ -3,6 +3,8 @@ module BigintTest;
 import Random;
 
 import Minilib.Math.BigInt;
+import Minilib.Monad.Random;
+import Minilib.Monad.State;
 import Minilib.Text.StringEx;
 import Minilib.Testing.UnitTest;
 import Minilib.Common.TimeEx;
@@ -351,7 +353,7 @@ test_generate_bigint = (
         ],
         |(seed, bit_len)|
         let random = Random::init_by_seed(seed.to_U64);
-        let (random, n) = random.generate_bigint(bit_len);
+        let (random, n) = generate_bigint(bit_len).run_state(random);
         //println("n=" + n.to_string).lift;;
         assert_equal("bit_length", bit_len, n.bit_length.to_I64);;
         pure()
@@ -371,7 +373,7 @@ test_generate_bigint_range = (
         let random = Random::init_by_seed(seed.to_U64);
         let begin: BigInt = *from_string(begin).from_result;
         let end: BigInt = *from_string(end).from_result;
-        let (random, n) = random.generate_bigint_range(begin, end);
+        let (random, n) = generate_bigint_range(begin, end).run_state(random);
         //println("n=" + n.to_string).lift;;
         assert_true("begin", begin <= n);;
         assert_true("end", n < end);;
