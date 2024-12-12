@@ -102,21 +102,3 @@ Synonym for `Polynomial::make`.
 ### `subst : Std::I64 -> Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64) -> Std::I64`
 
 `f.subst(x)` substitutes the indeterminate of a polynomial with `x`.
-
-## `namespace Minilib.Math.Polynomial::Polynomial`
-
-### `@coeff : Minilib.Math.Polynomial::Polynomial a -> Std::Array a`
-
-Retrieves the field `coeff` from a value of `Polynomial`.
-
-### `act_coeff : [f : Std::Functor] (Std::Array a -> f (Std::Array a)) -> Minilib.Math.Polynomial::Polynomial a -> f (Minilib.Math.Polynomial::Polynomial a)`
-
-Updates a value of `Polynomial` by applying a functorial action to field `coeff`.
-
-### `mod_coeff : (Std::Array a -> Std::Array a) -> Minilib.Math.Polynomial::Polynomial a -> Minilib.Math.Polynomial::Polynomial a`
-
-Updates a value of `Polynomial` by applying a function to field `coeff`.
-
-### `set_coeff : Std::Array a -> Minilib.Math.Polynomial::Polynomial a -> Minilib.Math.Polynomial::Polynomial a`
-
-Updates a value of `Polynomial` by setting field `coeff` to a specified one.

@@ -60,37 +60,3 @@ Synonym for `Modular::make`.
 `x.nonneg` changes `@value` with a equivalent non-negative value.
 For example, `modulo(-1, 3)` will be changed to `modulo(2,3)`
 because `-1 == 2 mod 3`.
-
-## `namespace Minilib.Math.Modular::Modular`
-
-### `@modulus : Minilib.Math.Modular::Modular a -> a`
-
-Retrieves the field `modulus` from a value of `Modular`.
-
-### `@value : Minilib.Math.Modular::Modular a -> a`
-
-Retrieves the field `value` from a value of `Modular`.
-
-### `act_modulus : [f : Std::Functor] (a -> f a) -> Minilib.Math.Modular::Modular a -> f (Minilib.Math.Modular::Modular a)`
-
-Updates a value of `Modular` by applying a functorial action to field `modulus`.
-
-### `act_value : [f : Std::Functor] (a -> f a) -> Minilib.Math.Modular::Modular a -> f (Minilib.Math.Modular::Modular a)`
-
-Updates a value of `Modular` by applying a functorial action to field `value`.
-
-### `mod_modulus : (a -> a) -> Minilib.Math.Modular::Modular a -> Minilib.Math.Modular::Modular a`
-
-Updates a value of `Modular` by applying a function to field `modulus`.
-
-### `mod_value : (a -> a) -> Minilib.Math.Modular::Modular a -> Minilib.Math.Modular::Modular a`
-
-Updates a value of `Modular` by applying a function to field `value`.
-
-### `set_modulus : a -> Minilib.Math.Modular::Modular a -> Minilib.Math.Modular::Modular a`
-
-Updates a value of `Modular` by setting field `modulus` to a specified one.
-
-### `set_value : a -> Minilib.Math.Modular::Modular a -> Minilib.Math.Modular::Modular a`
-
-Updates a value of `Modular` by setting field `value` to a specified one.

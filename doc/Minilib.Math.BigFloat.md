@@ -168,37 +168,3 @@ Convert a BigFloat to a string of exponential form with specified precision (i.e
 ### `to_string_precision : Std::I64 -> Minilib.Math.BigFloat::BigFloat -> Std::String`
 
 Convert a BigFloat to a string with specified precision (i.e., number of digits after the decimal point).
-
-## `namespace Minilib.Math.BigFloat::BigFloat`
-
-### `@exp : Minilib.Math.BigFloat::BigFloat -> Std::I64`
-
-Retrieves the field `exp` from a value of `BigFloat`.
-
-### `@int : Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigInt::BigInt`
-
-Retrieves the field `int` from a value of `BigFloat`.
-
-### `act_exp : [f : Std::Functor] (Std::I64 -> f Std::I64) -> Minilib.Math.BigFloat::BigFloat -> f Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by applying a functorial action to field `exp`.
-
-### `act_int : [f : Std::Functor] (Minilib.Math.BigInt::BigInt -> f Minilib.Math.BigInt::BigInt) -> Minilib.Math.BigFloat::BigFloat -> f Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by applying a functorial action to field `int`.
-
-### `mod_exp : (Std::I64 -> Std::I64) -> Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by applying a function to field `exp`.
-
-### `mod_int : (Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt) -> Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by applying a function to field `int`.
-
-### `set_exp : Std::I64 -> Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by setting field `exp` to a specified one.
-
-### `set_int : Minilib.Math.BigInt::BigInt -> Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
-
-Updates a value of `BigFloat` by setting field `int` to a specified one.

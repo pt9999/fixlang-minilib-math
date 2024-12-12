@@ -155,37 +155,3 @@ Converts BigInt to I64. If overflow, it produces unexpected result.
 ### `two : Minilib.Math.BigInt::BigInt`
 
 BigInt constant representing 2.
-
-## `namespace Minilib.Math.BigInt::BigInt`
-
-### `@nat : Minilib.Math.BigInt::BigInt -> Std::Array Std::U32`
-
-Retrieves the field `nat` from a value of `BigInt`.
-
-### `@sign : Minilib.Math.BigInt::BigInt -> Std::I64`
-
-Retrieves the field `sign` from a value of `BigInt`.
-
-### `act_nat : [f : Std::Functor] (Std::Array Std::U32 -> f (Std::Array Std::U32)) -> Minilib.Math.BigInt::BigInt -> f Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by applying a functorial action to field `nat`.
-
-### `act_sign : [f : Std::Functor] (Std::I64 -> f Std::I64) -> Minilib.Math.BigInt::BigInt -> f Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by applying a functorial action to field `sign`.
-
-### `mod_nat : (Std::Array Std::U32 -> Std::Array Std::U32) -> Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by applying a function to field `nat`.
-
-### `mod_sign : (Std::I64 -> Std::I64) -> Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by applying a function to field `sign`.
-
-### `set_nat : Std::Array Std::U32 -> Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by setting field `nat` to a specified one.
-
-### `set_sign : Std::I64 -> Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt`
-
-Updates a value of `BigInt` by setting field `sign` to a specified one.

@@ -64,37 +64,3 @@ Returns the conjugate complex number.
 ### `make : a -> a -> Minilib.Math.Complex::Complex a`
 
 Creates a complex number.
-
-## `namespace Minilib.Math.Complex::Complex`
-
-### `@im : Minilib.Math.Complex::Complex a -> a`
-
-Retrieves the field `im` from a value of `Complex`.
-
-### `@re : Minilib.Math.Complex::Complex a -> a`
-
-Retrieves the field `re` from a value of `Complex`.
-
-### `act_im : [f : Std::Functor] (a -> f a) -> Minilib.Math.Complex::Complex a -> f (Minilib.Math.Complex::Complex a)`
-
-Updates a value of `Complex` by applying a functorial action to field `im`.
-
-### `act_re : [f : Std::Functor] (a -> f a) -> Minilib.Math.Complex::Complex a -> f (Minilib.Math.Complex::Complex a)`
-
-Updates a value of `Complex` by applying a functorial action to field `re`.
-
-### `mod_im : (a -> a) -> Minilib.Math.Complex::Complex a -> Minilib.Math.Complex::Complex a`
-
-Updates a value of `Complex` by applying a function to field `im`.
-
-### `mod_re : (a -> a) -> Minilib.Math.Complex::Complex a -> Minilib.Math.Complex::Complex a`
-
-Updates a value of `Complex` by applying a function to field `re`.
-
-### `set_im : a -> Minilib.Math.Complex::Complex a -> Minilib.Math.Complex::Complex a`
-
-Updates a value of `Complex` by setting field `im` to a specified one.
-
-### `set_re : a -> Minilib.Math.Complex::Complex a -> Minilib.Math.Complex::Complex a`
-
-Updates a value of `Complex` by setting field `re` to a specified one.
