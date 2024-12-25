@@ -228,10 +228,19 @@ test_mul_div_random = (
         let _ = *assert_equal("quo", a, quo);
         let _ = *assert_equal("rem", BigNat::_zero, rem);
         let (quo2, rem2) = _divmod(a, b);
+        let _ = *assert_true("rem2", _cmp((rem2,0),(b,0)) < 0);
         let d = _add(_mul(quo2, b), rem2);
         //let _ = *println("(a,b,c,d)="+(a,b,c,d).to_string).lift;
         let _ = *assert_equal("d", a, d);
-        pure()        
+
+        let _ = *assert_equal("a / 1", (a, BigNat::_zero), _divmod(a, BigNat::_one));
+        let _ = *assert_equal("a / a", (BigNat::_one, BigNat::_zero), _divmod(a, a));
+        do {
+            let _ = *assert_equal("1 / b", (BigNat::_zero, BigNat::_one), _divmod(BigNat::_one, b));
+            let _ = *assert_equal("0 / b", (BigNat::_zero, BigNat::_zero), _divmod(BigNat::_zero, b));
+            pure()
+        }.when(_cmp((BigNat::_one, 0), (b, 0)) < 0);;
+        pure()
     )
 );
 
