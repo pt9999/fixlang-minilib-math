@@ -16,9 +16,29 @@ Arbitrary-precision natural number. This is internal module of BigInt.
 
 Calculates `a0 + a1`.
 
+### `_add_u32_with_offset1 : Std::Array Std::U32 -> Std::U32 -> Std::I64 -> Std::Array Std::U32`
+
+`_add_u32_with_offset1(a0, a1, offset1)` calculates `a0 + a1 * pow(_base, offset1)`.
+
+### `_add_u64_with_exp : Std::Array Std::U32 -> Std::U64 -> Std::U64 -> Std::Array Std::U32`
+
+`_add_u64_with_exp(a, bm, be)` calculates `a + bm * pow(2, be)`.
+
 ### `_add_with_offset1 : Std::Array Std::U32 -> (Std::Array Std::U32, Std::I64) -> Std::Array Std::U32`
 
-Calculates `a0 + a1 * _base ^ offset1`.
+Calculates `a0 + a1 * pow(_base, offset1)`.
+
+### `_append_last_zeros : Std::I64 -> Std::Array Std::U32 -> Std::Array Std::U32`
+
+Appends trailing zeros until the size of the array is at least the specified size.
+
+### `_approx_with_exp : Std::I64 -> Std::Array Std::U32 -> (Std::U64, Std::I64)`
+
+Approximate BigNat `a` as `m * 2^e`.
+`m` is the mantissa and its type is U64.
+`e` is the expopnent and its type is I64.
+If the bitlength of `a` is smaller or equal to `m_bitlen`, returns `(a._to_u64, 0)`.
+It should be hold that `m * e^2 <= a < (m+1) * e^2`.
 
 ### `_base : Std::U64`
 
@@ -32,6 +52,10 @@ Returns 0 if `a` is zero.
 ### `_cmp : (Std::Array Std::U32, Std::I64) -> (Std::Array Std::U32, Std::I64) -> Std::I64`
 
 Calculates `sign(a0 * _base ^ offset0 - a1 * _base ^ offset1)`.
+
+### `_convert_borrow_to_sign : (Std::Array Std::U32, Std::U64) -> (Std::Array Std::U32, Std::I64)`
+
+Converts a result of a borrowed subtraction to a signed subtraction.
 
 ### `_divmod : Std::Array Std::U32 -> Std::Array Std::U32 -> (Std::Array Std::U32, Std::Array Std::U32)`
 
@@ -123,6 +147,26 @@ returns the result and the sign.
 
 Calculates `a0 - a1`.
 Aborts if the result is negative.
+
+### `_sub_u32_with_offset : Std::Array Std::U32 -> Std::U32 -> Std::I64 -> (Std::Array Std::U32, Std::U64)`
+
+`_sub_u32_with_offset(a, b, b_offset)` calculates `a - b * pow(_base, b_offset)`.
+returns the result and the borrow.
+
+### `_sub_u64_with_exp : Std::Array Std::U32 -> Std::U64 -> Std::U64 -> (Std::Array Std::U32, Std::U64)`
+
+`_sub_u64_with_exp(a, bm, be)` calculates `a - bm * pow(2, be)`.
+Returns the result and the borrow.
+
+### `_sub_with_exp_mul : Std::Array Std::U32 -> Std::Array Std::U32 -> Std::U64 -> Std::U64 -> (Std::Array Std::U32, Std::U64)`
+
+`_sub_with_exp_mul(a, b, qm, qe)` calculates `a - b * qm * pow(2, qe)`.
+Returns the result and the borrow.
+
+### `_sub_with_offset_mul : Std::Array Std::U32 -> Std::Array Std::U32 -> Std::U32 -> Std::I64 -> (Std::Array Std::U32, Std::U64)`
+
+`_sub_with_offset_mul(a, b, q, b_offset)` calculates `a - b * q * pow(_base, b_offset)`.
+Returns the result and the borrow.
 
 ### `_to_string : Std::Array Std::U32 -> Std::String`
 
