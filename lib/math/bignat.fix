@@ -43,6 +43,16 @@ _divmod_base = |x| (
     (x.shift_right(_log2_base.to_U64), x.bit_and(_base - 1_U64))
 );
 
+// Appends trailing zeros until the size of the array is at least the specified size.
+_append_last_zeros: I64 -> Array U32 -> Array U32;
+_append_last_zeros = |n, a| (
+    loop (
+        a, |a|
+        if a.get_size >= n { break $ a };
+        continue $ a.push_back(0_U32)
+    )
+);
+
 // Removes trailing zeros.
 _remove_last_zeros: Array U32 -> Array U32;
 _remove_last_zeros = |a| (
@@ -106,6 +116,33 @@ _cmp = |(a0, offset0), (a1, offset1)| (
     )
 );
 
+// Approximate BigNat `a` as `m * 2^e`.
+// `m` is the mantissa and its type is U64.
+// `e` is the expopnent and its type is I64.
+// If the bitlength of `a` is smaller or equal to `m_bitlen`, returns `(a._to_u64, 0)`.
+// It should be hold that `m * e^2 <= a < (m+1) * e^2`.
+_approx_with_exp: I64 -> Array U32 -> (U64, I64);
+_approx_with_exp = |m_bitlen, a| (
+    assert_lazy(|_| "invalid m_bitlen: m_bitlen=" + m_bitlen.to_string, 0 <= m_bitlen && m_bitlen <= 64) $ |_|
+    let a = a._remove_last_zeros;
+    let a_bitlen = a._bit_length.to_I64;
+    if a_bitlen <= m_bitlen {
+        (a._to_u64, 0)
+    };
+    let e = a_bitlen - m_bitlen;
+    let (off, shift) = _divmod_log2_base(e.to_U64);
+    let (off, shift) = (off.to_I64, shift.to_I64);
+    let m: U64 = loop(
+        (0_U64, a.get_size - 1), |(m, i)|
+        if i < off { break $ m };
+        let d: U64 = a.@(i).to_U64;
+        let s: I64 = (i - off) * _log2_base.to_I64 - shift;
+        let d: U64 = if s >= 0 { d.shift_left(s.to_U64) } else { d.shift_right((-s).to_U64) };
+        let m: U64 = m.bit_or(d);
+        continue $ (m, i - 1)
+    );
+    (m, e)
+);
 
 // Calculates `a0 + a1`.
 _add: Array U32 -> Array U32 -> Array U32;
@@ -128,7 +165,7 @@ _add = |a0, a1| (
     a0._remove_last_zeros
 );
 
-// Calculates `a0 + a1 * _base ^ offset1`.
+// Calculates `a0 + a1 * pow(_base, offset1)`.
 _add_with_offset1: Array U32 -> (Array U32, I64) -> Array U32;
 _add_with_offset1 = |a0, (a1, offset1)| (
     let n0 = a0.get_size;
@@ -156,6 +193,47 @@ _add_with_offset1 = |a0, (a1, offset1)| (
         let a0 = a0.set(i, d2.to_U32);
         continue $ (a0, i + 1, carry)
     )._remove_last_zeros
+);
+
+// `_add_u32_with_offset1(a0, a1, offset1)` calculates `a0 + a1 * pow(_base, offset1)`.
+_add_u32_with_offset1: Array U32 -> U32 -> I64 -> Array U32;
+_add_u32_with_offset1 = |a0, a1, offset1| (
+    let n0 = a0.get_size;
+    let n1 = 1 + offset1;
+    let n2 = max(n0, n1);
+    let a0 = a0._append_last_zeros(n2);
+    loop(
+        (a0, offset1, 0_U64), |(a0, i, carry)|
+        if i >= n2 {
+            let a0 = if carry == 0_U64 { a0 }
+            else { a0.push_back(carry.to_U32) };
+            break $ a0
+        };
+        if i >= n1 && carry == 0_U64 {
+            break $ a0
+        };
+        let d0: U32 = a0.@(i);
+        let d1: U32 = if i == offset1 { a1 } else { 0_U32 };
+        let d2: U64 = d0.to_U64 + d1.to_U64 + carry;
+        let (carry, d2) = _divmod_base(d2);
+        let a0 = a0.set(i, d2.to_U32);
+        continue $ (a0, i + 1, carry)
+    )._remove_last_zeros
+);
+
+// `_add_u64_with_exp(a, bm, be)` calculates `a + bm * pow(2, be)`.
+_add_u64_with_exp: Array U32 -> U64 -> U64 -> Array U32;
+_add_u64_with_exp = |a, bm, be| (
+    loop(
+        (a, bm, be), |(a, bm, be)|
+        if bm == 0_U64 { break $ a };
+        let (off, shift) = _divmod_log2_base(be);
+        let q32 = bm.shift_left(shift).bit_and(_base - 1_U64).to_U32;
+        let a = _add_u32_with_offset1(a, q32, off.to_I64);
+        let bm = bm.shift_right(_log2_base - shift);
+        let be = be + (_log2_base - shift);
+        continue $ (a, bm, be)
+    )
 );
 
 // Calculates `a0 - a1`.
@@ -203,6 +281,118 @@ _signed_sub_with_offset = |(a0, offset0), (a1, offset1)| (
     let a2 = a2._remove_last_zeros;
     ((a2, offset2), 1)
 );
+
+// `_sub_u32_with_offset(a, b, b_offset)` calculates `a - b * pow(_base, b_offset)`.
+// returns the result and the borrow.
+_sub_u32_with_offset: Array U32 -> U32 -> I64 -> (Array U32, U64);
+_sub_u32_with_offset = |a, b, b_offset| (
+    let na = a.get_size;
+    let nb = 1 + b_offset;
+    let na = max(na, nb);
+    let a = a._append_last_zeros(na);
+    loop(
+        (a, b_offset, 0_U64), |(a, i, borrow)|
+        if i >= na  {
+            break $ (a, borrow)
+        };
+        if i >= nb && borrow == 0_U64 {
+            break $ (a, borrow)
+        };
+        let a_u32: U32 = a.@(i);
+        let b_u32: U32 = if i == b_offset { b } else { 0_U32 };
+        let sub_u64: U64 = b_u32.to_U64 + borrow;
+        let (sub_hi: U64, sub_lo: U64) = _divmod_base(sub_u64);
+        let sub_lo: U32 = sub_lo.to_U32;
+
+        let (borrow, a_u32) = if a_u32 >= sub_lo {
+            (sub_hi, a_u32 - sub_lo)
+        } else {
+            (sub_hi + 1_U64, (_base + a_u32.to_U64 - sub_lo.to_U64).to_U32)
+        };
+        let a = a.set(i, a_u32);
+        continue $ (a, i + 1, borrow)
+    )
+);
+
+// `_sub_u64_with_exp(a, bm, be)` calculates `a - bm * pow(2, be)`.
+// Returns the result and the borrow.
+_sub_u64_with_exp: Array U32 -> U64 -> U64 -> (Array U32, U64);
+_sub_u64_with_exp = |a, bm, be| (
+    loop(
+        (a, 0_U64, bm, be), |(a, borrow, bm, be)|
+        if bm == 0_U64 { break $ (a, borrow) };
+        let (off, shift) = _divmod_log2_base(be);
+        let q32 = bm.shift_left(shift).bit_and(_base - 1_U64).to_U32;
+        let (a, borrow1) = _sub_u32_with_offset(a, q32, off.to_I64);
+        let borrow = borrow + borrow1;
+        let bm = bm.shift_right(_log2_base - shift);
+        let be = be + (_log2_base - shift);
+        continue $ (a, borrow, bm, be)
+    )
+);
+
+// `_sub_with_offset_mul(a, b, q, b_offset)` calculates `a - b * q * pow(_base, b_offset)`.
+// Returns the result and the borrow.
+_sub_with_offset_mul: Array U32 -> Array U32 -> U32 -> I64 -> (Array U32, U64);
+_sub_with_offset_mul = |a, b, q, b_offset| (
+    let na = a.get_size;
+    let nb = b.get_size + b_offset;
+    let na = max(na, nb + 1);  // +1 in `nb + 1` is for q
+    let a = a._append_last_zeros(na);
+    let (a, borrow) = loop(
+        (a, b_offset, 0_U64), |(a, i, borrow)|
+        if i >= na  {
+            break $ (a, borrow)
+        };
+        if i >= nb && borrow == 0_U64 {
+            break $ (a, borrow)
+        };
+        let a_u32: U32 = a.@(i);
+        let b_u32: U32 = if b_offset <= i && i < nb { b.@(i - b_offset) } else { 0_U32 };
+        let sub_u64: U64 = b_u32.to_U64 * q.to_U64 + borrow;
+        let (sub_hi: U64, sub_lo: U64) = _divmod_base(sub_u64);
+        let sub_lo: U32 = sub_lo.to_U32;
+
+        let (borrow, a_u32) = if a_u32 >= sub_lo {
+            (sub_hi, a_u32 - sub_lo)
+        } else {
+            (sub_hi + 1_U64, (_base + a_u32.to_U64 - sub_lo.to_U64).to_U32)
+        };
+        let a = a.set(i, a_u32);
+        continue $ (a, i + 1, borrow)
+    );
+    (a, borrow)
+);
+
+// `_sub_with_exp_mul(a, b, qm, qe)` calculates `a - b * qm * pow(2, qe)`.
+// Returns the result and the borrow.
+_sub_with_exp_mul: Array U32 -> Array U32 -> U64 -> U64 -> (Array U32, U64);
+_sub_with_exp_mul = |a, b, qm, qe| (
+    loop(
+        (a, 0_U64, qm, qe), |(a, borrow, qm, qe)|
+        if qm == 0_U64 { break $ (a, borrow) };
+        let (off, shift) = _divmod_log2_base(qe);
+        let q32 = qm.shift_left(shift).bit_and(_base - 1_U64).to_U32;
+        let (a, borrow1) = _sub_with_offset_mul(a, b, q32, off.to_I64);
+        let borrow = borrow + borrow1;
+        let qm = qm.shift_right(_log2_base - shift);
+        let qe = qe + (_log2_base - shift);
+        continue $ (a, borrow, qm, qe)
+    )
+);
+
+// Converts a result of a borrowed subtraction to a signed subtraction.
+_convert_borrow_to_sign: (Array U32, U64) -> (Array U32, I64);
+_convert_borrow_to_sign = |(a, borrow)| (
+    if borrow > 0_U64 {
+        let a = a._neg;
+        let a = a._remove_last_zeros;
+        (a, -1)
+    };
+    let a = a._remove_last_zeros;
+    (a, 1)
+);
+
 
 // Treats `a` as a negative number in two's complement representation and reverses its sign.
 _neg: Array U32 -> Array U32;
@@ -298,44 +488,40 @@ _divmod = |a, b| (
         let (quo, rem) = _divmod_u32(a, b.@(0));
         (quo, [rem])
     };
+    let (bm, be) = b._approx_with_exp(32);
     let (quo, rem, rem_sign) = loop(
         (BigNat::_zero, a, 1), |(quo, a, a_sign)|
+        if _cmp((a,0), (b,0)) < 0 {
+            break $ (quo, a, a_sign)
+        };
         let an = a.get_size;
         let bn = b.get_size;
         if an < bn {
             break $ (quo, a, a_sign)
         };
-        let (q, qoff) = if an == bn {
-            let b0 = b.@(bn - 1).to_U64;
-            let a0 = a.@(an - 1).to_U64;
-            let (q1, q0) = _divmod_base(a0 / b0);
-            let q = [q0.to_U32, q1.to_U32];
-            let qoff = (an - 1) - (bn - 1);
-            (q, qoff)
-        } else {
-            let b0 = b.@(bn - 1).to_U64;
-            let a0 = a.@(an - 1).to_U64 * _base + a.@(an - 2).to_U64;
-            let (q1, q0) = _divmod_base(a0 / b0);
-            let q = [q0.to_U32, q1.to_U32];
-            let qoff = (an - 2) - (bn - 1);
-            (q, qoff)
-        };
-        let ((rem, rem_off), rem_sign) = _signed_sub_with_offset((a,0), (_mul(b, q), qoff));
-        // rem_off == 0
+        let (am, ae) = a._approx_with_exp(64);
+        //eval debug_eprintln(((am.to_string_hex,ae), ).format("(am,ae)={}"));
+        //eval debug_eprintln(((bm.to_string_hex,be), ).format("(bm,be)={}"));
+        let qm: U64 = am / bm;
+        let qe: I64 = ae - be;
+        //eval debug_eprintln(((qm.to_string_hex,qe), ).format("(qm,qe)={}"));
+        let (qm: U64, qe: U64) = if qe < 0 {
+            assert_lazy(|_| "qe too small: " + qe.to_string, -qe < 64) $ |_|
+            (qm.shift_right((-qe).to_U64), 0_U64)
+        } else { (qm, qe.to_U64) };
+        //eval debug_eprintln(((qm.to_string_hex,qe),).format(" -> (qm,qe)={}"));
+
+        let (rem, rem_sign) = _sub_with_exp_mul(a, b, qm, qe)._convert_borrow_to_sign;
         let rem = rem._remove_last_zeros;
         let rem_sign = rem_sign * a_sign;
         let quo = if a_sign > 0 {
-            _add_with_offset1(quo, (q, qoff))
+            _add_u64_with_exp(quo, qm, qe)
         } else {
-            let ((quo, qoffset), sign) = _signed_sub_with_offset((quo, 0), (q, qoff));
-            assert_lazy(|_| "quo subtraction underflow", sign > 0) $ |_|
+            let (quo, borrow) = _sub_u64_with_exp(quo, qm, qe);
+            assert_lazy(|_| "quo subtraction underflow", borrow == 0_U64) $ |_|
             quo
         };
         let quo = quo._remove_last_zeros;
-        if _cmp((rem,0), (b,0)) < 0 {
-            break $ (quo, rem, rem_sign)
-        };
-        //eval debug_eprintln((quo,rem).format("quo={} rem={}"));
         continue $ (quo, rem, rem_sign)
     );
     if rem_sign > 0 || rem == BigNat::_zero {
