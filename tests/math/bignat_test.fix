@@ -9,6 +9,20 @@ import Minilib.Testing.UnitTest;
 
 // TODO: add tests
 
+test_append_last_zeros: TestCase;
+test_append_last_zeros = (
+    make_table_test("test_append_last_zeros",
+        [
+            ([1_U32, 2_U32, 3_U32], 2, [1_U32, 2_U32, 3_U32]),
+            ([1_U32, 2_U32, 3_U32], 3, [1_U32, 2_U32, 3_U32]),
+            ([1_U32, 2_U32, 3_U32], 4, [1_U32, 2_U32, 3_U32, 0_U32]),
+            ([0_U32], 5, [0_U32, 0_U32, 0_U32, 0_U32, 0_U32]),
+        ],
+        |(a, n, expect)|
+        assert_equal("eq", expect, a._append_last_zeros(n))
+    )
+);
+
 test_remove_last_zeros: TestCase;
 test_remove_last_zeros = (
     make_table_test("test_remove_last_zeros",
@@ -90,6 +104,23 @@ test_cmp = (
     )
 );
 
+test_approx_with_exp: TestCase;
+test_approx_with_exp = (
+    make_table_test("test_approx_with_exp",
+        [
+            ([0x76543210_U32, 0xfedcba98_U32], 64, (0xfedcba9876543210_U64, 0)),
+            ([0x76543210_U32, 0xfedcba98_U32], 48, (0xfedcba987654_U64, 16)),
+            ([0x76543210_U32, 0x0000ba98_U32], 64, (0xba9876543210_U64, 0)),
+            ([0x76543210_U32, 0x0000ba98_U32], 32, (0xba987654_U64, 16)),
+            ([0x76543210_U32, 0xfedcba98_U32], 24, (0xfedcba_U64, 40)),
+            ([0x00873210_U32], 8, (0x87_U64, 16)),
+        ],
+        |(a, m_bitlen, expect)|
+        let actual = a._approx_with_exp(m_bitlen);
+        assert_equal("eq", expect, actual)
+    )
+);
+
 test_add: TestCase;
 test_add = (
     let s = |i| i.I64::shift_left(28);
@@ -148,6 +179,41 @@ test_add_with_offset1 = (
     )
 );
 
+test_add_u32_with_offset1: TestCase;
+test_add_u32_with_offset1 = (
+    make_table_test("test_add_u32_with_offset1",
+        [
+            ([0xffffffff, 2, 5], 0xaa, 0, [0xa9, 3, 5]),
+            ([0xffffffff, 0xffffffff, 0xffffffff], 0xaa, 0, [0xa9, 0, 0, 1]),
+            ([0xffffffff, 0xffffffff, 0xffffffff], 0xaa, 1, [0xffffffff, 0xa9, 0, 1]),
+            ([0xffffffff, 0xffffffff, 0xffffffff], 0xaa, 3, [0xffffffff, 0xffffffff, 0xffffffff, 0xaa]),
+        ],
+        |(a0, a1, offset1, expect)|
+        let a0 = a0.map(to_U32);
+        let a1 = a1.to_U32;
+        let expect = expect.map(to_U32);
+        let actual = _add_u32_with_offset1(a0, a1, offset1);
+        assert_equal("eq", expect, actual)
+    )
+);
+
+test_add_u64_with_exp: TestCase;
+test_add_u64_with_exp = (
+    make_table_test("test_add_u64_with_exp",
+        [
+            ([0xffffffff, 0xffffffff, 0xffffffff], 0x0000000000000004_U64, 16, [0x0003ffff, 0x00000000, 0x00000000, 1]),
+            ([0xffffffff, 0xffffffff, 0xffffffff], 0x0001000200030004_U64, 16, [0x0003ffff, 0x00020003, 0x00000001, 1]),
+            ([0x00000001, 0x00000002, 0x00000003, 0x00000004], 0xf000e000d000c000_U64, 48, [0x00000001, 0xc0000002, 0xe000d003, 0x0000f004]),
+        ],
+        |(a, bm, be, expect)|
+        let a = a.map(to_U32);
+        let be = be.to_U64;
+        let expect = expect.map(to_U32);
+        let actual = _add_u64_with_exp(a, bm, be);
+        assert_equal("eq", expect, actual)
+    )
+);
+
 test_signed_sub_with_offset: TestCase;
 test_signed_sub_with_offset = (
     make_table_test("test_signed_sub_with_offset",
@@ -170,6 +236,46 @@ test_signed_sub_with_offset = (
         assert_equal("eq", ((expect, ex_offset), ex_sign), actual)
     )
 );
+
+test_sub_u32_with_offset: TestCase;
+test_sub_u32_with_offset = (
+    make_table_test("test_sub_u32_with_offset",
+        [
+            ([0xa9, 3, 5], 0xaa, 0, ([0xffffffff, 2, 5], 0)),
+            ([0xa9, 0, 0], 0xaa, 0, ([0xffffffff, 0xffffffff, 0xffffffff], 1)),
+            ([0xffffffff, 0xa9, 0], 0xaa, 1, ([0xffffffff, 0xffffffff, 0xffffffff], 1)),
+            ([0xaaaaaaaa, 0xbbbbbbbb, 0xcccccccc], 0xaa, 1, ([0xaaaaaaaa, 0xbbbbbb11, 0xcccccccc], 0)),
+        ],
+        |(a, b, b_offset, (ex, ex_borrow))|
+        let a = a.map(to_U32);
+        let b = b.to_U32;
+        let ex = ex.map(to_U32);
+        let ex_borrow = ex_borrow.to_U64;
+        let actual = _sub_u32_with_offset(a, b, b_offset);
+        assert_equal("eq", (ex, ex_borrow), actual)
+    )
+);
+
+test_sub_u64_with_exp: TestCase;
+test_sub_u64_with_exp = (
+    make_table_test("test_sub_u64_with_exp",
+        [
+            ([0x0003ffff, 0x00000000, 0x00000000], 0x0000000000000004_U64, 16, ([0xffffffff, 0xffffffff, 0xffffffff], 1)),
+            ([0x0003ffff, 0x00020003, 0x00000001], 0x0001000200030004_U64, 16, ([0xffffffff, 0xffffffff, 0xffffffff], 1)),
+            ([0x00000001, 0xc0000002, 0xe000d003, 0x0000f004], 0xf000e000d000c000_U64, 48, ([0x00000001, 0x00000002, 0x00000003, 0x00000004], 0)),
+        ],
+        |(a, bm, be, (ex, ex_borrow))|
+        let a = a.map(to_U32);
+        let be = be.to_U64;
+        let ex = ex.map(to_U32);
+        let ex_borrow = ex_borrow.to_U64;
+        let actual = _sub_u64_with_exp(a, bm, be);
+        assert_equal("eq", (ex, ex_borrow), actual)
+    )
+);
+
+// TODO: add test for _sub_with_offset_mul
+// TODO: add test for _sub_with_exp_mul
 
 test_add_sub_random: TestCase;
 test_add_sub_random = (
@@ -354,14 +460,20 @@ test_divmod_by_power_of_two = (
 main: IO ();
 main = (
     [
+        test_append_last_zeros,
         test_remove_last_zeros,
         test_from_u64,
         test_is_zero,
         test_to_u64,
         test_cmp,
+        test_approx_with_exp,
         test_add,
         test_add_with_offset1,
+        test_add_u32_with_offset1,
+        test_add_u64_with_exp,
         test_signed_sub_with_offset,
+        test_sub_u32_with_offset,
+        test_sub_u64_with_exp,
         test_add_sub_random,
         test_add_sub_with_offset_random,
         test_mul_div_random,
