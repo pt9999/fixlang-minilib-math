@@ -72,16 +72,6 @@ cmp = |a, b| (
     }
 );
 
-// `BigInt::divmod(a,b)` returns `(a/b, a%b)`.
-// NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
-divmod: BigInt -> BigInt -> (BigInt, BigInt);
-divmod = |a, b| (
-    let (quo, rem) = BigNat::_divmod(a.@nat, b.@nat);
-    let quo = BigInt::make(a.@sign * b.@sign, quo);
-    let rem = BigInt::make(a.@sign, rem);
-    (quo, rem)
-);
-
 // `BigInt::divmod_by_two(a)` returns `(a/2, a%2)`.
 divmod_by_two: BigInt -> (BigInt, BigInt);
 divmod_by_two = |a| (
@@ -234,10 +224,21 @@ impl BigInt: Mul {
     );
 }
 
+// `divmod(a,b)` returns `(a/b, a%b)`.
+// NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
+impl BigInt: DivMod {
+    divmod = |a, b| (
+        let (quo, rem) = BigNat::_divmod(a.@nat, b.@nat);
+        let quo = BigInt::make(a.@sign * b.@sign, quo);
+        let rem = BigInt::make(a.@sign, rem);
+        (quo, rem)
+    );
+}
+
 // NOTE: -8 / 3 == -2, as with the Fix language.
 impl BigInt: Div {
     div = |a, b| (
-        let (quo, rem) = BigInt::divmod(a, b);
+        let (quo, rem) = DivMod::divmod(a, b);
         quo
     );
 }
@@ -245,7 +246,7 @@ impl BigInt: Div {
 // NOTE: -8 % 3 == -2, as with the Fix language.
 impl BigInt: Rem {
     rem = |a, b| (
-        let (quo, rem) = BigInt::divmod(a, b);
+        let (quo, rem) = DivMod::divmod(a, b);
         rem
     );
 }

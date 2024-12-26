@@ -78,35 +78,36 @@ get_degree = |f| f.@coeff.get_size - 1;
 // If the division of the field does not fulfill the requirement
 // (ie. `forall a b, a == a / b * b`),
 // this function may return an incorrect result.
-divmod: [a: Field] Polynomial a -> Polynomial a -> (Polynomial a, Polynomial a);
-divmod = |num, den| (
-    assert_lazy (|_| "Divide by zero", den != zero) $ |_|
-    let (quo, rem) = loop(
-        (zero, num), |(quo, num)|
-        if num == zero { break $ (quo, num) };
-        let num_degree = num.get_degree;
-        let den_degree = den.get_degree;
-        if num_degree < den_degree { break $ (quo, num) };
-        let n = num.get(num_degree);
-        let d = den.get(den_degree);
-        let q = n / d;
-        let qd = q * d;
-        //eval if n != qd {
-        //    debug_eprintln("has reminder: " + (n, qd).to_string)
-        //} else {() };
-        let q = (n / d).at_degree(num_degree - den_degree);
-        let quo = quo + q;
-        let rem = num - q * den;
-        let residue = rem.get(num.get_degree);
-        //eval if rem.get_degree >= num.get_degree && num.get_degree > 0 {
-        //    debug_eprintln("has reminder !! "+(rem.get_degree, num.get_degree).to_string)
-        //} else {() };
-        //eval if residue != zero { debug_eprintln("residue="+residue.to_string)} else {()};
-        let rem = rem.set(num.get_degree, zero);
-        continue $ (quo, rem)
+impl [a: Field] Polynomial a: DivMod {
+    divmod = |num, den| (
+        assert_lazy (|_| "Divide by zero", den != zero) $ |_|
+        let (quo, rem) = loop(
+            (zero, num), |(quo, num)|
+            if num == zero { break $ (quo, num) };
+            let num_degree = num.get_degree;
+            let den_degree = den.get_degree;
+            if num_degree < den_degree { break $ (quo, num) };
+            let n = num.get(num_degree);
+            let d = den.get(den_degree);
+            let q = n / d;
+            let qd = q * d;
+            //eval if n != qd {
+            //    debug_eprintln("has reminder: " + (n, qd).to_string)
+            //} else {() };
+            let q = (n / d).at_degree(num_degree - den_degree);
+            let quo = quo + q;
+            let rem = num - q * den;
+            let residue = rem.get(num.get_degree);
+            //eval if rem.get_degree >= num.get_degree && num.get_degree > 0 {
+            //    debug_eprintln("has reminder !! "+(rem.get_degree, num.get_degree).to_string)
+            //} else {() };
+            //eval if residue != zero { debug_eprintln("residue="+residue.to_string)} else {()};
+            let rem = rem.set(num.get_degree, zero);
+            continue $ (quo, rem)
+        );
+        (quo, rem)
     );
-    (quo, rem)
-);
+}
 
 // Converts a polynomial to a string without simplification.
 _to_string_full: [a: Ring, a: ToString] Polynomial a -> String;
