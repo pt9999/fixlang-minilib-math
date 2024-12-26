@@ -15,12 +15,26 @@ trait a: One {
 // multiplication(`mul`), multiplicative unit(`one`).
 trait Ring = AdditiveGroup + One + Mul;
 
+// A trait for division-with-remainder.
+trait a: DivMod {
+    // `divmod(a, b)` returns `(a/b, a%b)`.
+    divmod: a -> a -> (a, a);
+}
+
+impl I64: DivMod {
+    divmod = |a, b| (a / b, a % b);
+}
+
+impl U64: DivMod {
+    divmod = |a, b| (a / b, a % b);
+}
+
 // A trait that represents an [Euclidean domain](https://en.wikipedia.org/wiki/Euclidean_domain),
 // which is a ring with following division-with-remainder.
 // ```
 // forall a b, a = (a / b) * b + (a % b)
 // ```
-trait Euclid = Ring + Div + Rem;
+trait Euclid = Ring + Div + Rem + DivMod;
 
 // A trait that represents a [field](https://en.wikipedia.org/wiki/Field_(mathematics)),
 // which is a ring with division(`div`).
