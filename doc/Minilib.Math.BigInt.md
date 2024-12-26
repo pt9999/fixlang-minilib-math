@@ -18,6 +18,11 @@ Arbitrary-precision integer.
 
 # Trait implementations
 
+### `impl Minilib.Math.BigInt::BigInt : Minilib.Math.Types::DivMod`
+
+`divmod(a,b)` returns `(a/b, a%b)`.
+NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
+
 ### `impl Minilib.Math.BigInt::BigInt : Minilib.Math.Types::One`
 
 ### `impl Minilib.Math.BigInt::BigInt : Std::Add`
@@ -85,11 +90,6 @@ Returns 0 if `a` is zero.
 ### `cmp : Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt -> Std::I64`
 
 `BigInt::cmp(a,b)` returns 1 if `a > b`, -1 if `a < b`, 0 if `a == b`.
-
-### `divmod : Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt -> (Minilib.Math.BigInt::BigInt, Minilib.Math.BigInt::BigInt)`
-
-`BigInt::divmod(a,b)` returns `(a/b, a%b)`.
-NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
 
 ### `divmod_by_two : Minilib.Math.BigInt::BigInt -> (Minilib.Math.BigInt::BigInt, Minilib.Math.BigInt::BigInt)`
 

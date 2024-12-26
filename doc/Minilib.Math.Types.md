@@ -8,6 +8,14 @@ Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Fie
 
 ## `namespace Minilib.Math.Types`
 
+### `trait a : DivMod`
+
+A trait for division-with-remainder.
+
+#### method `divmod : a -> a -> (a, a)`
+
+`divmod(a, b)` returns `(a/b, a%b)`.
+
 ### `trait a : One`
 
 A trait that represents a multiplicative unit.
@@ -20,9 +28,19 @@ A trait that represents a multiplicative unit.
 
 ### `impl Std::F64 : Minilib.Math.Types::One`
 
+### `impl Std::I64 : Minilib.Math.Types::DivMod`
+
 ### `impl Std::I64 : Minilib.Math.Types::One`
 
+### `impl Std::U64 : Minilib.Math.Types::DivMod`
+
 # Values
+
+## `namespace Minilib.Math.Types::DivMod`
+
+### `divmod : [a : Minilib.Math.Types::DivMod] a -> a -> (a, a)`
+
+`divmod(a, b)` returns `(a/b, a%b)`.
 
 ## `namespace Minilib.Math.Types::One`
 

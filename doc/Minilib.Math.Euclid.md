@@ -19,6 +19,10 @@ For details, see [Wikipedia: Euclidean domain](https://en.wikipedia.org/wiki/Euc
 
 ## `namespace Minilib.Math.Euclid`
 
+### `_extended_euclid_inner : [a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
+
+An internal function for `extended_euclid`.
+
 ### `extended_euclid : [a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
 
 `extended_euclid(a,b)` performs

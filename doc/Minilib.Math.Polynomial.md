@@ -18,6 +18,16 @@ For example, `[1,2,3]` means a polynomial `3x^2 + 2x + 1`.
 
 # Trait implementations
 
+### `impl [a : Minilib.Math.Types::Field] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::DivMod`
+
+`divmod(num, den)` calculates a quotient `quo = num / den`
+and a reminder `rem = num % den`.
+Returns `(quo, rem)`.
+The type of coefficients must be a field.
+If the division of the field does not fulfill the requirement
+(ie. `forall a b, a == a / b * b`),
+this function may return an incorrect result.
+
 ### `impl [a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::One`
 
 ### `impl [a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Std::Add`
@@ -53,16 +63,6 @@ Converts a polynomial to a string with simplification.
 ### `at_degree : [a : Minilib.Math.Types::Ring] Std::I64 -> a -> Minilib.Math.Polynomial::Polynomial a`
 
 `a.at_degree(n)` creates a polynomial `a * x ^ n`.
-
-### `divmod : [a : Minilib.Math.Types::Field] Minilib.Math.Polynomial::Polynomial a -> Minilib.Math.Polynomial::Polynomial a -> (Minilib.Math.Polynomial::Polynomial a, Minilib.Math.Polynomial::Polynomial a)`
-
-`divmod(num, den)` calculates a quotient `quo = num / den`
-and a reminder `rem = num % den`.
-Returns `(quo, rem)`.
-The type of coefficients must be a field.
-If the division of the field does not fulfill the requirement
-(ie. `forall a b, a == a / b * b`),
-this function may return an incorrect result.
 
 ### `generate : Std::I64 -> Std::I64 -> Std::Iterator (Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64))`
 
