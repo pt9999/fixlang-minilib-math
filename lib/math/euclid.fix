@@ -25,20 +25,29 @@ gcd = |a, b| (
 // and returns `(x, y, d)`.
 extended_euclid: [a: Euclid] a -> a -> (a, a, a);
 extended_euclid = |a, b| (
+    let (x, y, d) = _extended_euclid_inner(a, b);
+    assert_lazy(|_| "extended euclid failed"
+        // + " ((a,x),(b,y),(ans, d))=" + ((a, x), (b, y), (a * x + b * y, d)).to_string
+    , a * x + b * y == d) $ |_|
+    (x, y, d)
+);
+
+// An internal function for `extended_euclid`.
+_extended_euclid_inner: [a: Euclid] a -> a -> (a, a, a);
+_extended_euclid_inner = |a, b| (
     if b == zero {
         (one, zero, a)
     };
-    let q = a / b;
-    let r = a % b;
-    assert_lazy(|_| "division-with-remainder failed", a == q * b + r) $ |_|
-    let (y, z, d) = extended_euclid(b, r);
+    let (q, r) = divmod(a, b);
+    //assert_lazy(|_| "division-with-remainder failed", a == q * b + r) $ |_|
+    let (y, z, d) = _extended_euclid_inner(b, r);
     // b * y + r * z = d
     // b * y + (a - q * b) * z = d
     // a * z + b * (y - q * z) = d
     let x = z;
     let y = y - q * z;
-    assert_lazy(|_| "extended euclid failed"
+    //assert_lazy(|_| "extended euclid failed"
         // + " ((a,x),(b,y),(ans, d))=" + ((a, x), (b, y), (a * x + b * y, d)).to_string
-    , a * x + b * y == d) $ |_|
+    //, a * x + b * y == d) $ |_|
     (x, y, d)
 );
