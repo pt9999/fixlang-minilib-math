@@ -86,7 +86,7 @@ Calculates `(a0 / d1, a0 % d1)`.
 
 ### `_dummy : ()`
 
-### `_from_string_inner : Std::Array Std::U8 -> Std::I64 -> Std::Array Std::U32 -> Std::Result Std::String (Std::Array Std::U32)`
+### `_from_string_inner : Std::Array Std::U8 -> Std::I64 -> Std::Array Std::U32 -> Std::Result Std::ErrMsg (Std::Array Std::U32)`
 
 FromString of BigNat.
 
