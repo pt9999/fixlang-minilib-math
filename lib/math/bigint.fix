@@ -273,7 +273,7 @@ impl BigInt: ToBytes {
         let u8_len = u32_len * 4;
         let bytes = Array::fill(u8_len, 0_U8);
         let bytes = Iterator::range(0, u32_len).fold(
-            bytes, |bytes, i|
+            bytes, |i, bytes|
             bytes.set_u32_be(4 * (u32_len - 1 - i), a.@nat.@(i))    // big endian
         );
         bytes

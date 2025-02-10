@@ -183,12 +183,10 @@ impl [a: Ring] Polynomial a: Mul {
         let x_degree = x.get_degree;
         let y_degree = y.get_degree;
         let degree = x_degree + y_degree;
-        let iter = do {
-            pure $ (*Iterator::range(0, x_degree + 1), *Iterator::range(0, y_degree + 1))
-        };
+        let iter = Iterator::range(0, x_degree + 1).product(Iterator::range(0, y_degree + 1));
         let coeff = Array::fill(degree + 1, zero);
         let coeff = iter.fold(
-            coeff, |coeff, (ix, iy)|
+            coeff, |(ix, iy), coeff|
             coeff.mod(ix + iy, add(x.get(ix) * y.get(iy)))
         );
         Polynomial::make(coeff)
@@ -241,26 +239,26 @@ is_primitive = |f| (
 );
 
 // `generate(p,m)` generates polynomials of degree `m` or lower in GF(p).
-generate: I64 -> I64 -> Iterator (Polynomial (Modular I64));
+generate: I64 -> I64 -> DynIterator (Polynomial (Modular I64));
 generate = |p, m| (
     let inner = fix $ |inner, m| (
         if m < 0 {
-            pure $ Iterator::empty
+            pure $ DynIterator::empty
         };
         let coeff = *inner(m - 1);
         Iterator::range(0, p).map(|i|
-            coeff.push_front(modulo(i, p))
-        )
+            coeff.push_front(modulo(i, p)).to_dyn
+        ).to_dyn
     );
     inner(m).map(to_array >> polynomial)
 );
 
 // `generate_primitive_polynomials(p, m)` generates primitive polynomials of degree `m` in GF(p).
-generate_primitive_polynomials: I64 -> I64 -> Iterator (Polynomial (Modular I64));
+generate_primitive_polynomials: I64 -> I64 -> DynIterator (Polynomial (Modular I64));
 generate_primitive_polynomials = |p, m| (
     Polynomial::generate(p, m)
     .filter(|f| f.get_degree == m)
-    .filter(is_primitive)
+    .filter(is_primitive).to_dyn
 );
 
 // `f.subst(x)` substitutes the indeterminate of a polynomial with `x`.
