@@ -679,17 +679,17 @@ _to_string_hex = |a| (
 _to_string: Array U32 -> String;
 _to_string = |a| (
     let a = a._remove_last_zeros;
-    let output = _to_string_inner(a, Iterator::empty);
-    let output = if output.is_empty { output.push_front('0') } else { output };
+    let output = _to_string_inner(a, DynIterator::empty);
+    let output = if output.is_empty { output.push_front('0').to_dyn } else { output };
     output.to_array._unsafe_to_string
 );
 
-_to_string_inner: Array U32 -> Iterator U8 -> Iterator U8;
+_to_string_inner: Array U32 -> DynIterator U8 -> DynIterator U8;
 _to_string_inner = |a, output| (
     if a.get_size == 0 { output };
     if a.get_size == 1 && a.@(0) == 0_U32 { output };
     let (quo, rem) = _divmod_u32(a, 10_U32);
-    let output = output.push_front('0' + rem.to_U8);
+    let output = output.push_front('0' + rem.to_U8).to_dyn;
     _to_string_inner(quo, output)
 );
 
