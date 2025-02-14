@@ -26,7 +26,7 @@ For details, see [Wikipedia: Ring](https://en.wikipedia.org/wiki/Ring_(mathemati
 
 `repeat_by_U64(op, x, a, n)` calculates `x.op(a).op(a)...` for `n` times.
 `op` is an associative binary operation.
-This function returns the same result as `Iterator::range(0, n).fold(x, |x, _| x.op(a))`,
+This function returns the same result as `Iterator::range(0, n).fold(x, |_, x| x.op(a))`,
 but faster.
 
 ### `times_by_U64 : [a : Std::Add, a : Std::Zero] Std::U64 -> a -> a`

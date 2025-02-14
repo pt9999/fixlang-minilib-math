@@ -174,7 +174,7 @@ ToString of BigNat.
 
 ### `_to_string_hex : Std::Array Std::U32 -> Std::String`
 
-### `_to_string_inner : Std::Array Std::U32 -> Std::Iterator Std::U8 -> Std::Iterator Std::U8`
+### `_to_string_inner : Std::Array Std::U32 -> Std::Iterator::DynIterator Std::U8 -> Std::Iterator::DynIterator Std::U8`
 
 ### `_to_u64 : Std::Array Std::U32 -> Std::U64`
 

@@ -64,11 +64,11 @@ Converts a polynomial to a string with simplification.
 
 `a.at_degree(n)` creates a polynomial `a * x ^ n`.
 
-### `generate : Std::I64 -> Std::I64 -> Std::Iterator (Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64))`
+### `generate : Std::I64 -> Std::I64 -> Std::Iterator::DynIterator (Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64))`
 
 `generate(p,m)` generates polynomials of degree `m` or lower in GF(p).
 
-### `generate_primitive_polynomials : Std::I64 -> Std::I64 -> Std::Iterator (Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64))`
+### `generate_primitive_polynomials : Std::I64 -> Std::I64 -> Std::Iterator::DynIterator (Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64))`
 
 `generate_primitive_polynomials(p, m)` generates primitive polynomials of degree `m` in GF(p).
 
