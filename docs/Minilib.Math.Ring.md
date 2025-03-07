@@ -1,4 +1,6 @@
-# `module Minilib.Math.Ring`
+# Minilib.Math.Ring
+
+Defined in minilib-math@0.5.1
 
 Functions for a ring, for example multiplication or exponent with an integer.
 
@@ -8,27 +10,33 @@ multiplication(`mul`), multiplicative unit(`one`).
 
 For details, see [Wikipedia: Ring](https://en.wikipedia.org/wiki/Ring_(mathematics)).
 
-# Types and aliases
+## Values
 
-# Traits and aliases
+### namespace Minilib.Math.Ring
 
-# Trait implementations
+#### pow_by_U64
 
-# Values
-
-## `namespace Minilib.Math.Ring`
-
-### `pow_by_U64 : [a : Std::Mul, a : Minilib.Math.Types::One] Std::U64 -> a -> a`
+Type: `[a : Std::Mul, a : Minilib.Math.Types::One] Std::U64 -> a -> a`
 
 `a.pow_by_U64(n)` calculates `a ^ n`.
 
-### `repeat_by_U64 : (a -> a -> a) -> a -> a -> Std::U64 -> a`
+#### repeat_by_U64
+
+Type: `(a -> a -> a) -> a -> a -> Std::U64 -> a`
 
 `repeat_by_U64(op, x, a, n)` calculates `x.op(a).op(a)...` for `n` times.
 `op` is an associative binary operation.
 This function returns the same result as `Iterator::range(0, n).fold(x, |_, x| x.op(a))`,
 but faster.
 
-### `times_by_U64 : [a : Std::Add, a : Std::Zero] Std::U64 -> a -> a`
+#### times_by_U64
+
+Type: `[a : Std::Add, a : Std::Zero] Std::U64 -> a -> a`
 
 `a.times_by_U64(n)` calculates `a * n`.
+
+## Types and aliases
+
+## Traits and aliases
+
+## Trait implementations

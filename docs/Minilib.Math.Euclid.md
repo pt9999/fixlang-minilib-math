@@ -1,4 +1,6 @@
-# `module Minilib.Math.Euclid`
+# Minilib.Math.Euclid
+
+Defined in minilib-math@0.5.1
 
 Euclid algorithms, such as `gcd` (greatest common divisor).
 
@@ -9,27 +11,33 @@ forall a b, a = (a / b) * b + (a % b)
 
 For details, see [Wikipedia: Euclidean domain](https://en.wikipedia.org/wiki/Euclidean_domain).
 
-# Types and aliases
+## Values
 
-# Traits and aliases
+### namespace Minilib.Math.Euclid
 
-# Trait implementations
+#### _extended_euclid_inner
 
-# Values
-
-## `namespace Minilib.Math.Euclid`
-
-### `_extended_euclid_inner : [a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
+Type: `[a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
 
 An internal function for `extended_euclid`.
 
-### `extended_euclid : [a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
+#### extended_euclid
+
+Type: `[a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
 
 `extended_euclid(a,b)` performs
 [Extended Euclidean algorithm](https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm).
 It solves `a * x + b * y = d` where `d = gcd(a, b)`,
 and returns `(x, y, d)`.
 
-### `gcd : [a : Minilib.Math.Types::Euclid] a -> a -> a`
+#### gcd
+
+Type: `[a : Minilib.Math.Types::Euclid] a -> a -> a`
 
 `gcd(a,b)` calculates the greatest common divisor of `a` and `b`.
+
+## Types and aliases
+
+## Traits and aliases
+
+## Trait implementations
