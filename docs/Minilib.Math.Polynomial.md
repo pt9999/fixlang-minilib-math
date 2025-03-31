@@ -79,9 +79,16 @@ Type: `[a : Minilib.Math.Types::Ring] Std::I64 -> a -> Minilib.Math.Polynomial::
 
 #### subst
 
-Type: `Std::I64 -> Minilib.Math.Polynomial::Polynomial (Minilib.Math.Modular::Modular Std::I64) -> Std::I64`
+Type: `[a : Minilib.Math.Types::Ring] a -> Minilib.Math.Polynomial::Polynomial a -> a`
 
 `f.subst(x)` substitutes the indeterminate of a polynomial with `x`.
+
+#### subst0
+
+Type: `[a : Minilib.Math.Types::Ring] a -> (c -> a -> a) -> Minilib.Math.Polynomial::Polynomial c -> a`
+
+`f.subst0(x, mul_coeff)` substitutes the indeterminate of a polynomial with `x`.
+`mul_coeff` is a function that multiplies a value of type `a` by a coefficient of type `c`.
 
 ## Types and aliases
 
@@ -102,6 +109,8 @@ Type: `Std::Array a`
 ## Traits and aliases
 
 ## Trait implementations
+
+### impl `Minilib.Math.Polynomial::Polynomial : Std::Functor`
 
 ### impl `[a : Minilib.Math.Types::Field] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::DivMod`
 
