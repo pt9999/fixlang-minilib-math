@@ -15,6 +15,12 @@ trait a: One {
 // multiplication(`mul`), multiplicative unit(`one`).
 trait Ring = AdditiveGroup + One + Mul;
 
+// A trait that represents scalar multiplication.
+trait a: MulScalar {
+    type ScalarType a;
+    mul_scalar: ScalarType a -> a -> a;
+}
+
 // A trait for division-with-remainder.
 trait a: DivMod {
     // `divmod(a, b)` returns `(a/b, a%b)`.
