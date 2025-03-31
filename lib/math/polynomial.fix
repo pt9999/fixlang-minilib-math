@@ -142,6 +142,12 @@ impl [a: Ring, a: ToString] Polynomial a: ToString {
     to_string = _to_string_simple;
 }
 
+impl Polynomial: Functor {
+    map = |f, x| Polynomial {
+        coeff: x.@coeff.map(f)
+    };
+}
+
 impl [a: Ring] Polynomial a: Eq {
     eq = |x, y| (
         x.@coeff == y.@coeff
@@ -207,6 +213,22 @@ impl [a: Field] Polynomial a: Rem {
     );
 }
 
+// `f.subst0(x, mul_coeff)` substitutes the indeterminate of a polynomial with `x`.
+// `mul_coeff` is a function that multiplies a value of type `a` by a coefficient of type `c`.
+subst0: [a: Ring] a -> (c -> a -> a) -> Polynomial c -> a;
+subst0 = |x, mul_coeff, f| (
+    loop(
+        (0, one, zero), |(i, x_i, sum)|
+        if i >= f.@coeff.get_size { break $ sum };
+        let sum = sum + mul_coeff(f.@coeff.@(i), x_i);
+        continue $ (i + 1, x * x_i, sum)
+    )
+);
+
+// `f.subst(x)` substitutes the indeterminate of a polynomial with `x`.
+subst: [a: Ring] a -> Polynomial a -> a;
+subst = |x, f| f.subst0(x, mul);
+
 //--------------------------------------------------
 //  Polynomial over Galois Field (GF(p))
 //  For details, see [Wikipedia: Finite field arithmetic](https://en.wikipedia.org/wiki/Finite_field_arithmetic)
@@ -259,14 +281,4 @@ generate_primitive_polynomials = |p, m| (
     Polynomial::generate(p, m)
     .filter(|f| f.get_degree == m)
     .filter(is_primitive).to_dyn
-);
-
-// `f.subst(x)` substitutes the indeterminate of a polynomial with `x`.
-subst: I64 -> Polynomial (Modular I64) -> I64;
-subst = |x, f| (
-    let coeff = f.@coeff.to_iter.map(nonneg);
-    coeff.zip(Iterator::count_up(0)).map(|(c, i)|
-        c.@value * x.pow_by_U64(i.to_U64)
-    )
-    .fold(0, add)
 );
