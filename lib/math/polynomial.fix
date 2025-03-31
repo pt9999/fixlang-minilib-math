@@ -199,6 +199,13 @@ impl [a: Ring] Polynomial a: Mul {
     );
 }
 
+impl [a: Ring] Polynomial a: MulScalar {
+    type ScalarType (Polynomial a) = a;
+    mul_scalar = |s, x| Polynomial::make(
+        x.@coeff.map(mul(s))
+    );
+}
+
 impl [a: Field] Polynomial a: Div {
     div = |x, y| (
         let (quo, rem) = divmod(x, y);
