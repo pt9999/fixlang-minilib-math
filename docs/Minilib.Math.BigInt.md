@@ -1,19 +1,12 @@
 # Minilib.Math.BigInt
 
-Defined in minilib-math@0.5.1
+Defined in minilib-math@0.6.2
 
 Arbitrary-precision integer.
 
 ## Values
 
 ### namespace Minilib.Math.BigInt
-
-#### _bitand_I64
-
-Type: `Std::I64 -> Minilib.Math.BigInt::BigInt -> Std::I64`
-
-`a._bitand_I64(i64)` returns bitwise-AND of `a` and `i64`.
-`i64` must be a positive number and less than BigNat::_base.
 
 #### abs
 

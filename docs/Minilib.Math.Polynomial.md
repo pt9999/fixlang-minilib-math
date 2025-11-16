@@ -1,24 +1,12 @@
 # Minilib.Math.Polynomial
 
-Defined in minilib-math@0.5.1
+Defined in minilib-math@0.6.2
 
 Polynomial of one variable, for example `x^2 + 2x + 1`. The coefficients can be any ring.
 
 ## Values
 
 ### namespace Minilib.Math.Polynomial
-
-#### _to_string_full
-
-Type: `[a : Minilib.Math.Types::Ring, a : Std::ToString] Minilib.Math.Polynomial::Polynomial a -> Std::String`
-
-Converts a polynomial to a string without simplification.
-
-#### _to_string_simple
-
-Type: `[a : Minilib.Math.Types::Ring, a : Std::ToString] Minilib.Math.Polynomial::Polynomial a -> Std::String`
-
-Converts a polynomial to a string with simplification.
 
 #### at_degree
 
@@ -121,6 +109,8 @@ The type of coefficients must be a field.
 If the division of the field does not fulfill the requirement
 (ie. `forall a b, a == a / b * b`),
 this function may return an incorrect result.
+
+### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::MulScalar`
 
 ### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::One`
 

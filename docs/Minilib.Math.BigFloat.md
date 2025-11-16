@@ -1,6 +1,6 @@
 # Minilib.Math.BigFloat
 
-Defined in minilib-math@0.5.1
+Defined in minilib-math@0.6.2
 
 Arbitrary-precision floating point number.
 
@@ -18,56 +18,6 @@ For binary operator such as `a + b`, `a - b`, `a * b`, `a / b`, the precision of
 ## Values
 
 ### namespace Minilib.Math.BigFloat
-
-#### _approx_log2
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Std::I64`
-
-Calculates approximation of `log2(a.abs)`.
-
-#### _from_string_precision
-
-Type: `Std::String -> Std::Option Std::I64 -> Std::Result Std::ErrMsg Minilib.Math.BigFloat::BigFloat`
-
-#### _get_num_frac_digits
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Std::I64`
-
-get the preferred number of fractional digits (not same as a.get_prec10).
-
-#### _maximize_precision
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
-
-Move the topmost 1 to MSB
-
-#### _one
-
-Type: `Minilib.Math.BigFloat::BigFloat`
-
-#### _sqrt_inner
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat -> Std::I64 -> Minilib.Math.BigFloat::BigFloat`
-
-Returns the square root of `a` using Newton-Raphson method.
-
-#### _ten
-
-Type: `Minilib.Math.BigFloat::BigFloat`
-
-#### _to_string_exp_precision
-
-Type: `Std::Option Std::I64 -> Minilib.Math.BigFloat::BigFloat -> Std::String`
-
-#### _to_string_rep
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Std::String`
-
-Convert a BigFloat to a string of internal representation.
-
-#### _zero
-
-Type: `Minilib.Math.BigFloat::BigFloat`
 
 #### abs
 

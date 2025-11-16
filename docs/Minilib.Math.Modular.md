@@ -1,6 +1,6 @@
 # Minilib.Math.Modular
 
-Defined in minilib-math@0.5.1
+Defined in minilib-math@0.6.2
 
 This is an arithmetic with a modulus (modulo), for example `2 * 5 = 10 = 3 (mod 7)`.
 
@@ -9,12 +9,6 @@ For details, see [Wikipedia: Modular Arithmetic](https://en.wikipedia.org/wiki/M
 ## Values
 
 ### namespace Minilib.Math.Modular
-
-#### _get_modulus
-
-Type: `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a -> Minilib.Math.Modular::Modular a -> a`
-
-Returns modulus of either `x` or `y`.
 
 #### make
 

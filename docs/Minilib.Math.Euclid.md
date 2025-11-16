@@ -1,6 +1,6 @@
 # Minilib.Math.Euclid
 
-Defined in minilib-math@0.5.1
+Defined in minilib-math@0.6.2
 
 Euclid algorithms, such as `gcd` (greatest common divisor).
 
@@ -14,12 +14,6 @@ For details, see [Wikipedia: Euclidean domain](https://en.wikipedia.org/wiki/Euc
 ## Values
 
 ### namespace Minilib.Math.Euclid
-
-#### _extended_euclid_inner
-
-Type: `[a : Minilib.Math.Types::Euclid] a -> a -> (a, a, a)`
-
-An internal function for `extended_euclid`.
 
 #### extended_euclid
 
