@@ -40,7 +40,7 @@ test_extended_euclid = (
         let a = BigInt::from_I64(a);
         let b = BigInt::from_I64(b);
         let (x, y, d) = extended_euclid(a, b);
-        let _ = *assert_equal("d", d, a * x + b * y);
+        assert_equal("d", d, a * x + b * y);;
         assert_equal("gcd", d, Euclid::gcd(a, b))
     )
 );

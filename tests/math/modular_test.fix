@@ -218,13 +218,13 @@ test_mul_div = (
         let ma = Modular::make(a.@0, a.@1);
         let mb = Modular::make(b.@0, b.@1);
         let mc = Modular::make(c.@0, c.@1);
-        let _ = *assert_equal("c == a * b", mc, ma * mb);
-        let _ = *if mb == zero { pure() } else {
+        assert_equal("c == a * b", mc, ma * mb);;
+        if mb == zero { pure() } else {
             assert_equal("a == c / b", ma, mc / mb)
-        };
-        let _ = *if ma == zero { pure() } else {
+        };;
+        if ma == zero { pure() } else {
             assert_equal("b == c / a", mb, mc / ma)
-        };
+        };;
         pure()
     )
 );

@@ -43,7 +43,7 @@ test_set_prec = (
         let a = BigFloat::make(BigInt::make(sign, nat), exp);
         let a = a.mod_int(set_nat(nat)); // to avoid _remove_last_zeros
         let a = a.set_prec(prec);
-        let _ = *assert_equal("nat", ex_nat, a.@int.@nat);
+        assert_equal("nat", ex_nat, a.@int.@nat);;
         assert_equal("exp", ex_exp, a.@exp)
     )
 );
@@ -127,9 +127,9 @@ test_eq_lt_le = (
         let a = BigFloat::from_F64(a);
         let b = BigFloat::from_F64(b).set_prec(96);
         let actual = (a == b, a < b, a <= b);
-        let _ = *assert_equal("eq", expect.@0, actual.@0);
-        let _ = *assert_equal("lt", expect.@1, actual.@1);
-        let _ = *assert_equal("le", expect.@2, actual.@2);
+        assert_equal("eq", expect.@0, actual.@0);;
+        assert_equal("lt", expect.@1, actual.@1);;
+        assert_equal("le", expect.@2, actual.@2);;
         pure()
     )
 );
@@ -156,17 +156,17 @@ test_sqrt = (
         let diff_x2 = (xx2 - a).abs;
         /*
         let show: BigFloat -> String = |x| x.to_string_precision(prec10*2)+" " + x._to_string_rep;
-        let _ = *eprintln("a      ="+a.show).lift;
-        let _ = *eprintln("xx     ="+xx.show).lift;
-        let _ = *eprintln("xx1    ="+xx1.show).lift;
-        let _ = *eprintln("xx2    ="+xx2.show).lift;
+        eprintln("a      ="+a.show).lift;;
+        eprintln("xx     ="+xx.show).lift;;
+        eprintln("xx1    ="+xx1.show).lift;;
+        eprintln("xx2    ="+xx2.show).lift;;
         let show: BigFloat -> String = |x| x.to_string_precision(prec10)+" " + x._to_string_rep;
-        let _ = *eprintln("diff_x ="+diff_x.show).lift;
-        let _ = *eprintln("diff_x1="+diff_x1.show).lift;
-        let _ = *eprintln("diff_x2="+diff_x2.show).lift;
+        eprintln("diff_x ="+diff_x.show).lift;;
+        eprintln("diff_x1="+diff_x1.show).lift;;
+        eprintln("diff_x2="+diff_x2.show).lift;;
         */
-        let _ = *assert_true("diff_x <= diff_x1", diff_x <= diff_x1);
-        let _ = *assert_true("diff_x <= diff_x2", diff_x <= diff_x2);
+        assert_true("diff_x <= diff_x1", diff_x <= diff_x1);;
+        assert_true("diff_x <= diff_x2", diff_x <= diff_x2);;
         pure()
     )
 );

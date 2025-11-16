@@ -22,8 +22,8 @@ test_make = (
         ],
         |(sign, nat, expect_sign, expect_nat)|
         let a = BigInt::make(sign, nat);
-        let _ = *assert_equal("sign", expect_sign, a.@sign);
-        let _ = *assert_equal("nat", expect_nat, a.@nat);
+        assert_equal("sign", expect_sign, a.@sign);;
+        assert_equal("nat", expect_nat, a.@nat);;
         pure()
     )
 );
@@ -112,9 +112,9 @@ test_is_zero_positive_negative = (
         ],
         |(a,(zero,pos,neg))|
         let a: BigInt = *from_string(a).from_result;
-        let _ = *assert_equal("zero", zero, a.is_zero);
-        let _ = *assert_equal("pos", pos, a.is_positive);
-        let _ = *assert_equal("neg", neg, a.is_negative);
+        assert_equal("zero", zero, a.is_zero);;
+        assert_equal("pos", pos, a.is_positive);;
+        assert_equal("neg", neg, a.is_negative);;
         pure()
     )
 );
@@ -131,8 +131,8 @@ test_is_even_odd = (
         ],
         |(a,(even,odd))|
         let a: BigInt = *from_string(a).from_result;
-        let _ = *assert_equal("even", even, a.is_even);
-        let _ = *assert_equal("odd", odd, a.is_odd);
+        assert_equal("even", even, a.is_even);;
+        assert_equal("odd", odd, a.is_odd);;
         pure()
     )
 );
@@ -153,10 +153,10 @@ test_cmp_eq_lt_le = (
         |(a,b,(cmp, eq, lt, le))|
         let a: BigInt = *from_string(a).from_result;
         let b: BigInt = *from_string(b).from_result;
-        let _ = *assert_equal("cmp", cmp, BigInt::cmp(a, b));
-        let _ = *assert_equal("eq", eq, a == b);
-        let _ = *assert_equal("lt", lt, a < b);
-        let _ = *assert_equal("le", le, a <= b);
+        assert_equal("cmp", cmp, BigInt::cmp(a, b));;
+        assert_equal("eq", eq, a == b);;
+        assert_equal("lt", lt, a < b);;
+        assert_equal("le", le, a <= b);;
         pure()
     )
 );
@@ -241,9 +241,9 @@ test_div_rem = (
         let b: BigInt = *from_string(b).from_result;
         let quo: BigInt = *from_string(quo).from_result;
         let rem: BigInt = *from_string(rem).from_result;
-        let _ = *assert_equal("quo", quo, a/b);
-        let _ = *assert_equal("rem", rem, a%b);
-        let _ = *assert_equal("a", a, quo * b + rem);
+        assert_equal("quo", quo, a/b);;
+        assert_equal("rem", rem, a%b);;
+        assert_equal("a", a, quo * b + rem);;
         pure()
     )
 );
@@ -289,19 +289,19 @@ test_perf = (
     );
     let a: BigInt = *timeit("a", |_| from_string("10000000000000000000000000000000000000000000000000000000000000000000000").or_abort);
     let b: BigInt = *timeit("b", |_| from_string("7777777777777777").or_abort);
-    let _ = *timeit("a.to_string", |_| a.to_string);
-    let _ = *timeit("a==b", |_| a==b);
-    let _ = *timeit("a>b", |_| a>b);
-    let _ = *timeit("a>=b", |_| a>=b);
-    let _ = *timeit("a+b", |_| a+b);
-    let _ = *timeit("a-b", |_| a-b);
-    let _ = *timeit("a*b", |_| a*b);
-    let _ = *timeit("a/b", |_| a/b);
-    let _ = *timeit("a%b", |_| a%b);
-    let _ = *timeit("b/a", |_| b/a);
-    let _ = *timeit("b%a", |_| b%a);
-    let _ = *timeit("a/a", |_| a/a);
-    let _ = *timeit("a%a", |_| a%a);
+    timeit("a.to_string", |_| a.to_string);;
+    timeit("a==b", |_| a==b);;
+    timeit("a>b", |_| a>b);;
+    timeit("a>=b", |_| a>=b);;
+    timeit("a+b", |_| a+b);;
+    timeit("a-b", |_| a-b);;
+    timeit("a*b", |_| a*b);;
+    timeit("a/b", |_| a/b);;
+    timeit("a%b", |_| a%b);;
+    timeit("b/a", |_| b/a);;
+    timeit("b%a", |_| b%a);;
+    timeit("a/a", |_| a/a);;
+    timeit("a%a", |_| a%a);;
     pure()
 );
 

@@ -61,9 +61,9 @@ test_add_sub = (
             (rational(-3, 4), rational(5, 6), rational(1, 12))
         ],
         |(a, b, c)|
-        let _ = *assert_equal("add", c, a + b);
-        let _ = *assert_equal("sub", a, c - b);
-        let _ = *assert_equal("sub", b, c - a);
+        assert_equal("add", c, a + b);;
+        assert_equal("sub", a, c - b);;
+        assert_equal("sub", b, c - a);;
         pure()
     )
 );
@@ -78,9 +78,9 @@ test_mul_div = (
             (rational(-3, 4), rational(5, 6), rational(-5, 8))
         ],
         |(a, b, c)|
-        let _ = *assert_equal("mul", c, a * b);
-        let _ = *assert_equal("div", a, c / b);
-        let _ = *assert_equal("div", b, c / a);
+        assert_equal("mul", c, a * b);;
+        assert_equal("div", a, c / b);;
+        assert_equal("div", b, c / a);;
         pure()
     )
 );

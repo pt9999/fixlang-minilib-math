@@ -103,7 +103,7 @@ test_divmod_rational = (
         let exp_quo = Polynomial::make(exp_quo);
         let exp_rem = Polynomial::make(exp_rem);
         let (quo, rem) = divmod(num, den);
-        let _ = *assert_equal("quo", exp_quo, quo);
+        assert_equal("quo", exp_quo, quo);;
         assert_equal("rem", exp_rem, rem)
     )
 );
@@ -122,7 +122,7 @@ test_divmod_F64 = (
         let exp_quo = Polynomial::make(exp_quo);
         let exp_rem = Polynomial::make(exp_rem);
         let (quo, rem) = divmod(num, den);
-        let _ = *assert_equal("quo", exp_quo, quo);
+        assert_equal("quo", exp_quo, quo);;
         assert_equal("rem", exp_rem, rem)
     )
 );

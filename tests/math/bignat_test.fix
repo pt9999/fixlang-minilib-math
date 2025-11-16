@@ -291,7 +291,7 @@ test_add_sub_random = (
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _add(a, b);
         let d = _sub(c, b);
-        let _ = *assert_equal("d", a, d);
+        assert_equal("d", a, d);;
         pure()        
     )
 );
@@ -310,9 +310,9 @@ test_add_sub_with_offset_random = (
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _add_with_offset1(a, (b, 0));
         let ((d, doff), dsign) = _signed_sub_with_offset((c, 0), (b, 0));
-        let _ = *assert_equal("d", a, d);
-        let _ = *assert_equal("doff", 0, doff);
-        let _ = *assert_equal("dsign", 1, dsign);
+        assert_equal("d", a, d);;
+        assert_equal("doff", 0, doff);;
+        assert_equal("dsign", 1, dsign);;
         pure()        
     )
 );
@@ -331,19 +331,19 @@ test_mul_div_random = (
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _mul(a, b);
         let (quo, rem) = _divmod(c, b);
-        let _ = *assert_equal("quo", a, quo);
-        let _ = *assert_equal("rem", BigNat::_zero, rem);
+        assert_equal("quo", a, quo);;
+        assert_equal("rem", BigNat::_zero, rem);;
         let (quo2, rem2) = _divmod(a, b);
-        let _ = *assert_true("rem2", _cmp((rem2,0),(b,0)) < 0);
+        assert_true("rem2", _cmp((rem2,0),(b,0)) < 0);;
         let d = _add(_mul(quo2, b), rem2);
-        //let _ = *println("(a,b,c,d)="+(a,b,c,d).to_string).lift;
-        let _ = *assert_equal("d", a, d);
+        //println("(a,b,c,d)="+(a,b,c,d).to_string).lift;;
+        assert_equal("d", a, d);;
 
-        let _ = *assert_equal("a / 1", (a, BigNat::_zero), _divmod(a, BigNat::_one));
-        let _ = *assert_equal("a / a", (BigNat::_one, BigNat::_zero), _divmod(a, a));
+        assert_equal("a / 1", (a, BigNat::_zero), _divmod(a, BigNat::_one));;
+        assert_equal("a / a", (BigNat::_one, BigNat::_zero), _divmod(a, a));;
         do {
-            let _ = *assert_equal("1 / b", (BigNat::_zero, BigNat::_one), _divmod(BigNat::_one, b));
-            let _ = *assert_equal("0 / b", (BigNat::_zero, BigNat::_zero), _divmod(BigNat::_zero, b));
+            assert_equal("1 / b", (BigNat::_zero, BigNat::_one), _divmod(BigNat::_one, b));;
+            assert_equal("0 / b", (BigNat::_zero, BigNat::_zero), _divmod(BigNat::_zero, b));;
             pure()
         }.when(_cmp((BigNat::_one, 0), (b, 0)) < 0);;
         pure()
