@@ -1,6 +1,6 @@
 # Minilib.Math.Ring
 
-Defined in minilib-math@0.6.2
+Defined in minilib-math@0.6.3
 
 Functions for a ring, for example multiplication or exponent with an integer.
 
@@ -16,7 +16,7 @@ For details, see [Wikipedia: Ring](https://en.wikipedia.org/wiki/Ring_(mathemati
 
 #### pow_by_U64
 
-Type: `[a : Std::Mul, a : Minilib.Math.Types::One] Std::U64 -> a -> a`
+Type: `[a : Minilib.Math.Types::One, a : Std::Mul] Std::U64 -> a -> a`
 
 `a.pow_by_U64(n)` calculates `a ^ n`.
 

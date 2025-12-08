@@ -1,6 +1,6 @@
 # Minilib.Math.Modular
 
-Defined in minilib-math@0.6.2
+Defined in minilib-math@0.6.3
 
 This is an arithmetic with a modulus (modulo), for example `2 * 5 = 10 = 3 (mod 7)`.
 
