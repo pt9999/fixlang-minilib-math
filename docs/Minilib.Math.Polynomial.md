@@ -1,6 +1,6 @@
 # Minilib.Math.Polynomial
 
-Defined in minilib-math@0.6.3
+Defined in minilib-math@0.6.4
 
 Polynomial of one variable, for example `x^2 + 2x + 1`. The coefficients can be any ring.
 
