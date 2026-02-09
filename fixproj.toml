@@ -37,23 +37,22 @@ files = [
 
 [[dependencies]]
 name = "minilib-common"
-version = "*"
+version = "0.11.3"
 # path = "../fixlang-minilib-common"
 git = { url = "https://github.com/pt9999/fixlang-minilib-common.git" }
 
 [[dependencies]]
 name = "minilib-binary"
-version = "*"
+version = "0.5.5"
 # path = "../fixlang-minilib-binary"
 git = { url = "https://github.com/pt9999/fixlang-minilib-binary.git" }
 
 [[dependencies]]
 name = "math"
-version = "*"
+version = "1.2.0"
 git = { url = "https://github.com/tttmmmyyyy/fixlang-math.git" }
-
 
 [[dependencies]]
 name = "minilib-random"
-version = "*"
+version = "0.6.7"
 git = { url = "https://github.com/pt9999/fixlang-minilib-random.git" }
