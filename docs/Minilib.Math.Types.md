@@ -1,6 +1,6 @@
 # Minilib.Math.Types
 
-Defined in minilib-math@0.6.8
+Defined in minilib-math@0.7.0
 
 Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Field.
 

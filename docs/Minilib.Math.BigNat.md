@@ -1,6 +1,6 @@
 # Minilib.Math.BigNat
 
-Defined in minilib-math@0.6.8
+Defined in minilib-math@0.7.0
 
 Arbitrary-precision natural number. This is internal module of BigInt.
 
