@@ -329,11 +329,7 @@ to_string_precision = |num_frac_digits, a| (
     if num_frac_digits == 0 {
         str
     };
-    let str = if str.get_size >= num_frac_digits + 1 { str }
-    else {
-        let zero_padding = Array::fill(num_frac_digits + 1 - str.get_size, '0');
-        zero_padding._unsafe_to_string + str
-    };
+    let str = str.pad_left(num_frac_digits + 1, '0');
     let int_part = str.get_sub(0, str.get_size - num_frac_digits);
     let frac_part = str.get_sub(str.get_size - num_frac_digits, str.get_size);
     int_part + "." + frac_part

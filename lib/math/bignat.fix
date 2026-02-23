@@ -4,6 +4,7 @@ module Minilib.Math.BigNat;
 import Math;
 import Random;
 
+import Minilib.Common.Common;
 import Minilib.Common.Assert;
 import Minilib.Text.StringEx;
 import Minilib.Text.Hex;
@@ -679,18 +680,16 @@ _to_string_hex = |a| (
 _to_string: Array U32 -> String;
 _to_string = |a| (
     let a = a._remove_last_zeros;
-    let output = _to_string_inner(a, DynIterator::empty);
-    let output = if output.is_empty { output.push_front('0').to_dyn } else { output };
-    output.to_array._unsafe_to_string
-);
-
-_to_string_inner: Array U32 -> DynIterator U8 -> DynIterator U8;
-_to_string_inner = |a, output| (
-    if a.get_size == 0 { output };
-    if a.get_size == 1 && a.@(0) == 0_U32 { output };
-    let (quo, rem) = _divmod_u32(a, 10_U32);
-    let output = output.push_front('0' + rem.to_U8).to_dyn;
-    _to_string_inner(quo, output)
+    let output = loop(
+        (a, []), |(a, output /* reverse order */)|
+        if a.get_size == 0 { break $ output };
+        if a.get_size == 1 && a.@(0) == 0_U32 { break $ output };
+        let (quo, rem) = _divmod_u32(a, 10_U32);
+        let output = output.push_back('0' + rem.to_U8);
+        continue $ (quo, output)
+    );
+    let output = output.mod_if(output.is_empty, push_back('0'));
+    output.reverse.StringEx::from_array
 );
 
 // FromString of BigNat.
