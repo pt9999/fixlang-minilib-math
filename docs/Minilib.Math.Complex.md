@@ -1,6 +1,6 @@
 # Minilib.Math.Complex
 
-Defined in minilib-math@0.7.0
+Defined in minilib-math@0.7.1
 
 Complex number, for example `1 + 2i`.
 

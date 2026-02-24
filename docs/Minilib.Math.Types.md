@@ -1,6 +1,6 @@
 # Minilib.Math.Types
 
-Defined in minilib-math@0.7.0
+Defined in minilib-math@0.7.1
 
 Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Field.
 
@@ -12,6 +12,8 @@ Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Fie
 
 Type: `[a : Minilib.Math.Types::DivMod] a -> a -> (a, a)`
 
+Trait member of `Minilib.Math.Types::DivMod`
+
 `divmod(a, b)` returns `(a/b, a%b)`.
 
 ### namespace Minilib.Math.Types::MulScalar
@@ -20,11 +22,15 @@ Type: `[a : Minilib.Math.Types::DivMod] a -> a -> (a, a)`
 
 Type: `[a : Minilib.Math.Types::MulScalar] Minilib.Math.Types::MulScalar::ScalarType a -> a -> a`
 
+Trait member of `Minilib.Math.Types::MulScalar`
+
 ### namespace Minilib.Math.Types::One
 
 #### one
 
 Type: `[a : Minilib.Math.Types::One] a`
+
+Trait member of `Minilib.Math.Types::One`
 
 ## Types and aliases
 
