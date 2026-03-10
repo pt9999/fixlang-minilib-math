@@ -1,6 +1,6 @@
 # Minilib.Math.BigInt
 
-Defined in minilib-math@0.7.1
+Defined in minilib-math@0.7.2
 
 Arbitrary-precision integer.
 

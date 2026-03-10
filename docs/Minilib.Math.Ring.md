@@ -1,6 +1,6 @@
 # Minilib.Math.Ring
 
-Defined in minilib-math@0.7.1
+Defined in minilib-math@0.7.2
 
 Functions for a ring, for example multiplication or exponent with an integer.
 
