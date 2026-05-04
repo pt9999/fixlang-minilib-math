@@ -139,9 +139,9 @@ test_add = (
             ([0], [0, 0, 0], [0])
         ],
         |(a0, a1, expect)|
-        let a0 = a0.map(to_U32);
-        let a1 = a1.map(to_U32);
-        let expect = expect.map(to_U32);
+        let a0 = a0.map(u32);
+        let a1 = a1.map(u32);
+        let expect = expect.map(u32);
         let actual = _add(a0, a1);
         assert_equal("eq", expect, actual)
     )
@@ -171,9 +171,9 @@ test_add_with_offset1 = (
             ([0], ([0], 2), [0])
         ],
         |(a0, (a1, offset1), expect)|
-        let a0 = a0.map(to_U32);
-        let a1 = a1.map(to_U32);
-        let expect = expect.map(to_U32);
+        let a0 = a0.map(u32);
+        let a1 = a1.map(u32);
+        let expect = expect.map(u32);
         let actual = _add_with_offset1(a0, (a1, offset1));
         assert_equal("eq", expect, actual)
     )
@@ -189,9 +189,9 @@ test_add_u32_with_offset1 = (
             ([0xffffffff, 0xffffffff, 0xffffffff], 0xaa, 3, [0xffffffff, 0xffffffff, 0xffffffff, 0xaa]),
         ],
         |(a0, a1, offset1, expect)|
-        let a0 = a0.map(to_U32);
-        let a1 = a1.to_U32;
-        let expect = expect.map(to_U32);
+        let a0 = a0.map(u32);
+        let a1 = a1.u32;
+        let expect = expect.map(u32);
         let actual = _add_u32_with_offset1(a0, a1, offset1);
         assert_equal("eq", expect, actual)
     )
@@ -206,9 +206,9 @@ test_add_u64_with_exp = (
             ([0x00000001, 0x00000002, 0x00000003, 0x00000004], 0xf000e000d000c000_U64, 48, [0x00000001, 0xc0000002, 0xe000d003, 0x0000f004]),
         ],
         |(a, bm, be, expect)|
-        let a = a.map(to_U32);
-        let be = be.to_U64;
-        let expect = expect.map(to_U32);
+        let a = a.map(u32);
+        let be = be.u64;
+        let expect = expect.map(u32);
         let actual = _add_u64_with_exp(a, bm, be);
         assert_equal("eq", expect, actual)
     )
@@ -229,9 +229,9 @@ test_signed_sub_with_offset = (
             (([0], 2), ([0], 2), (([0], 2), 1))
         ],
         |((a0, offset0), (a1, offset1), ((expect, ex_offset), ex_sign))|
-        let a0 = a0.map(to_U32);
-        let a1 = a1.map(to_U32);
-        let expect = expect.map(to_U32);
+        let a0 = a0.map(u32);
+        let a1 = a1.map(u32);
+        let expect = expect.map(u32);
         let actual = _signed_sub_with_offset((a0, offset0), (a1, offset1));
         assert_equal("eq", ((expect, ex_offset), ex_sign), actual)
     )
@@ -247,10 +247,10 @@ test_sub_u32_with_offset = (
             ([0xaaaaaaaa, 0xbbbbbbbb, 0xcccccccc], 0xaa, 1, ([0xaaaaaaaa, 0xbbbbbb11, 0xcccccccc], 0)),
         ],
         |(a, b, b_offset, (ex, ex_borrow))|
-        let a = a.map(to_U32);
-        let b = b.to_U32;
-        let ex = ex.map(to_U32);
-        let ex_borrow = ex_borrow.to_U64;
+        let a = a.map(u32);
+        let b = b.u32;
+        let ex = ex.map(u32);
+        let ex_borrow = ex_borrow.u64;
         let actual = _sub_u32_with_offset(a, b, b_offset);
         assert_equal("eq", (ex, ex_borrow), actual)
     )
@@ -265,10 +265,10 @@ test_sub_u64_with_exp = (
             ([0x00000001, 0xc0000002, 0xe000d003, 0x0000f004], 0xf000e000d000c000_U64, 48, ([0x00000001, 0x00000002, 0x00000003, 0x00000004], 0)),
         ],
         |(a, bm, be, (ex, ex_borrow))|
-        let a = a.map(to_U32);
-        let be = be.to_U64;
-        let ex = ex.map(to_U32);
-        let ex_borrow = ex_borrow.to_U64;
+        let a = a.map(u32);
+        let be = be.u64;
+        let ex = ex.map(u32);
+        let ex_borrow = ex_borrow.u64;
         let actual = _sub_u64_with_exp(a, bm, be);
         assert_equal("eq", (ex, ex_borrow), actual)
     )
@@ -286,7 +286,7 @@ test_add_sub_random = (
             pure $ (bit_length1, bit_length2)
         },
         |(bit_length1, bit_length2)|
-        let random = Random::init_by_seed((123 + bit_length1*551 + bit_length2*661).to_U64);
+        let random = Random::init_by_seed((123 + bit_length1*551 + bit_length2*661).u64);
         let (random, a) = BigNat::_generate_bignat(bit_length1, random);
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _add(a, b);
@@ -305,7 +305,7 @@ test_add_sub_with_offset_random = (
             pure $ (bit_length1, bit_length2)
         },
         |(bit_length1, bit_length2)|
-        let random = Random::init_by_seed((123 + bit_length1*551 + bit_length2*661).to_U64);
+        let random = Random::init_by_seed((123 + bit_length1*551 + bit_length2*661).u64);
         let (random, a) = BigNat::_generate_bignat(bit_length1, random);
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _add_with_offset1(a, (b, 0));
@@ -326,7 +326,7 @@ test_mul_div_random = (
             pure $ (bit_length1, bit_length2)
         },
         |(bit_length1, bit_length2)|
-        let random = Random::init_by_seed((12345 + bit_length1*331 + bit_length2*441).to_U64);
+        let random = Random::init_by_seed((12345 + bit_length1*331 + bit_length2*441).u64);
         let (random, a) = BigNat::_generate_bignat(bit_length1, random);
         let (random, b) = BigNat::_generate_bignat(bit_length2, random);
         let c = _mul(a, b);
@@ -359,8 +359,8 @@ test_neg = (
             ([0, 0, 0], [0, 0, 0])
         ],
         |(a0, expect)|
-        let a0 = a0.map(to_U32);
-        let expect = expect.map(to_U32);
+        let a0 = a0.map(u32);
+        let expect = expect.map(u32);
         let actual = a0._neg;
         assert_equal("eq", expect, actual)
     )
@@ -429,9 +429,9 @@ test_shift_left_right_random = (
             pure $ (bit_length, shift)
         },
         |(bit_length, shift)|
-        let random = Random::init_by_seed((1234 + bit_length*31 + shift*41).to_U64);
+        let random = Random::init_by_seed((1234 + bit_length*31 + shift*41).u64);
         let (random, a) = BigNat::_generate_bignat(bit_length, random);
-        let b = a._shift_left(shift.to_U64)._shift_right(shift.to_U64);
+        let b = a._shift_left(shift.u64)._shift_right(shift.u64);
         assert_equal("eq", a, b)
     )
 );

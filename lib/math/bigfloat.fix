@@ -59,28 +59,28 @@ is_negative = |a| a.@int.is_negative;
 
 // Converts F64 to BigFloat.
 from_F64: F64 -> BigFloat;
-from_F64 = |f64| (
-    if f64 == 0.0 { BigFloat::_zero };
-    let sign = if f64 < 0.0 { -1 } else { 1 };
-    let f64 = f64.abs;
-    let (fr, exp) = Math::frexp(f64);
-    let exp = exp.to_I64 - 53;
+from_F64 = |f64val| (
+    if f64val == 0.0 { BigFloat::_zero };
+    let sign = if f64val < 0.0 { -1 } else { 1 };
+    let f64val = f64val.abs;
+    let (fr, exp) = Math::frexp(f64val);
+    let exp = exp.i64 - 53;
     let fr = fr * 2.0.Math::pow(53.0);
-    let (quo, rem) = _divmod_base(fr.to_U64);
-    let nat = [rem.to_U32, quo.to_U32];
+    let (quo, rem) = _divmod_base(fr.u64);
+    let nat = [rem.u32, quo.u32];
     BigFloat::make(BigInt::make(sign, nat), exp)
 );
 
 // Converts BigFloat to F64. If BigFloat is out of range of F64, unexpected result is returned.
-to_F64: BigFloat -> F64;
-to_F64 = |a| (
+f64: BigFloat -> F64;
+f64 = |a| (
     if a.is_zero { 0.0 };
     let a = a.set_prec(53);
-    assert_lazy(|_| "invalid nat size", a.@int.@nat.get_size <= 2) $ |_|
-    let u64 = a.@int.@nat._to_u64;
+    assert_lazy(|_| "invalid nat size", a.@int.@nat.@size <= 2) $ |_|
+    let u64val = a.@int.@nat._to_u64;
     let sign = a.@int.@sign;
-    let f64 = sign.to_F64 * u64.to_F64 * 2.0.Math::pow(a.@exp.to_F64);
-    f64
+    let f64val = sign.f64 * u64val.f64 * 2.0.Math::pow(a.@exp.f64);
+    f64val
 );
 
 // Gets the precision of a BigFloat in base 10.
@@ -88,21 +88,21 @@ to_F64 = |a| (
 get_prec10: BigFloat -> I64;
 get_prec10 = |a| (
     let prec = a.get_prec;
-    let prec10 = Math::floor(prec.to_F64 * Math::log10(2.0)).to_I64;
+    let prec10 = Math::floor(prec.f64 * Math::log10(2.0)).i64;
     prec10
 );
 
 // Gets the precision of a BigFloat in base 2. It is multiple of 32.
 get_prec: BigFloat -> I64;
 get_prec = |a| (
-    a.@int.@nat.get_size * BigNat::_log2_base.to_I64
+    a.@int.@nat.@size * BigNat::_log2_base.i64
 );
 
 // Sets the precision of a BigFloat in base 10.
 // It calls `set_prec()` after converting the precision to base 2.
 set_prec10: I64 -> BigFloat -> BigFloat;
 set_prec10 = |prec10, a| (
-    let prec = Math::ceil(prec10.to_F64 / Math::log10(2.0)).to_I64;
+    let prec = Math::ceil(prec10.f64 / Math::log10(2.0)).i64;
     a.set_prec(prec)
 );
 
@@ -112,17 +112,17 @@ set_prec: I64 -> BigFloat -> BigFloat;
 set_prec = |prec, a| (
     // Round-up the precision to the multiple of _log2_base.
     let prec = (
-        if prec == 0 { _log2_base.to_I64 };
-        let (quo, rem) = _divmod_log2_base(prec.to_U64);
+        if prec == 0 { _log2_base.i64 };
+        let (quo, rem) = _divmod_log2_base(prec.u64);
         let quo = if rem == 0_U64 { quo } else { quo + 1_U64 };
-        (quo * _log2_base).to_I64
+        (quo * _log2_base).i64
     );
 
     // Move the topmost 1 to MSB
     let a = _maximize_precision(a);
 
-    let old_size = a.@int.@nat.get_size;
-    let new_size = prec / BigNat::_log2_base.to_I64;
+    let old_size = a.@int.@nat.@size;
+    let new_size = prec / BigNat::_log2_base.i64;
     if old_size == new_size {
         a
     };
@@ -134,14 +134,14 @@ set_prec = |prec, a| (
         a.mod_int(mod_nat $ |nat|
             let n = old_size - new_size;
             // round up if truncated part >= 0.5
-            let round_up = nat.@(n - 1) >= _base.shift_right(1_U64).to_U32;
+            let round_up = nat.@(n - 1) >= _base.shift_right(1_U64).u32;
             let nat = nat.get_sub(n, old_size);
             let nat = if round_up { _add(nat, BigNat::_one) } else { nat };
             nat
         )
     };
     let a = a.mod_exp(|exp|
-        exp + (old_size - new_size) * BigNat::_log2_base.to_I64
+        exp + (old_size - new_size) * BigNat::_log2_base.i64
     );
     a
 );
@@ -151,15 +151,15 @@ _maximize_precision: BigFloat -> BigFloat;
 _maximize_precision = |a| (
     if a.is_zero { a };
     let nat = a.@int.@nat;
-    let last_digit = nat.@(nat.get_size - 1);
-    if last_digit.shift_right(_log2_base.to_U32 - 1_U32).bit_and(1_U32) != 0_U32 {
+    let last_digit = nat.@(nat.@size - 1);
+    if last_digit.shift_right(_log2_base.u32 - 1_U32).bit_and(1_U32) != 0_U32 {
         a   // MSB is 1 already
     };
     let bit_length = nat._bit_length;
     let (_, last_bit_length) = _divmod_log2_base(bit_length);
     let shift = _log2_base - last_bit_length;
     let a = a.mod_int(mod_nat(_shift_left(shift)));
-    let a = a.mod_exp(|exp| exp - shift.to_I64);
+    let a = a.mod_exp(|exp| exp - shift.i64);
     a
 );
 
@@ -167,7 +167,7 @@ _maximize_precision = |a| (
 epsilon: BigFloat -> BigFloat;
 epsilon = |a| (
     a.mod_int(mod_nat(|nat|
-        let nat = Array::fill(nat.get_size, 0_U32);
+        let nat = Array::fill(nat.@size, 0_U32);
         nat.set(0, 1_U32)
     ))
 );
@@ -175,7 +175,7 @@ epsilon = |a| (
 // Calculates approximation of `log2(a.abs)`.
 _approx_log2: BigFloat -> I64;
 _approx_log2 = |a| (
-    a.@int.@nat._bit_length.to_I64 + a.@exp
+    a.@int.@nat._bit_length.i64 + a.@exp
 );
 
 // Calculates `a * 2^e`.
@@ -252,8 +252,8 @@ pow_by_U64 = |n, a| (
 _from_string_precision: String -> Option I64 -> Result ErrMsg BigFloat;
 _from_string_precision = |str, opt_prec10| (
     // handle minus sign
-    if str.get_size > 0 && str.get_bytes.@(0) == '-' {
-        let str_positive: String = str.get_sub(1, str.get_size);
+    if str.@size > 0 && str.get_bytes.@(0) == '-' {
+        let str_positive: String = str.get_sub(1, str.@size);
         let val_positive: BigFloat = *_from_string_precision(str_positive, opt_prec10);
         ok $ -val_positive
     };
@@ -273,17 +273,17 @@ _from_string_precision = |str, opt_prec10| (
     let prec10 = if opt_prec10.is_some {
         opt_prec10.as_some
     } else {
-        str_append.get_size
+        str_append.@size
     };
     let int: BigInt = *from_string(str_append);
     let bf: BigFloat = BigFloat::make(int, 0).set_prec10(prec10);
-    let exp10 = exp10 - frac_part.get_size;
+    let exp10 = exp10 - frac_part.@size;
     let bf = if exp10 == 0 {
         bf
     } else if exp10 > 0 {
-        bf * BigFloat::_ten.set_prec10(prec10).pow_by_U64(exp10.to_U64)
+        bf * BigFloat::_ten.set_prec10(prec10).pow_by_U64(exp10.u64)
     } else {
-        bf / BigFloat::_ten.set_prec10(prec10).pow_by_U64((-exp10).to_U64)
+        bf / BigFloat::_ten.set_prec10(prec10).pow_by_U64((-exp10).u64)
     };
     let bf = bf.set_prec10(prec10);
     ok $ bf
@@ -311,13 +311,13 @@ to_string_precision = |num_frac_digits, a| (
     let a_nat = if num_frac_digits == 0 {
         a_nat
     } else {
-        _mul(a_nat, _pow_by_U64([10_U32], num_frac_digits.to_U64))
+        _mul(a_nat, _pow_by_U64([10_U32], num_frac_digits.u64))
     };
     // multiply a_nat by 2^a_exp.
     let a_nat = if a_exp >= 0 {
-        a_nat._shift_left(a_exp.to_U64)
+        a_nat._shift_left(a_exp.u64)
     } else {
-        let neg_exp = (-a_exp).to_U64;
+        let neg_exp = (-a_exp).u64;
         let (quo, rem) = _divmod_by_power_of_two(a_nat, neg_exp);
         // round-up by rem
         let rem = rem._shift_right(neg_exp - 1_U64)._remove_last_zeros;
@@ -330,8 +330,8 @@ to_string_precision = |num_frac_digits, a| (
         str
     };
     let str = str.pad_left(num_frac_digits + 1, '0');
-    let int_part = str.get_sub(0, str.get_size - num_frac_digits);
-    let frac_part = str.get_sub(str.get_size - num_frac_digits, str.get_size);
+    let int_part = str.get_sub(0, str.@size - num_frac_digits);
+    let frac_part = str.get_sub(str.@size - num_frac_digits, str.@size);
     int_part + "." + frac_part
 );
 
@@ -352,12 +352,12 @@ _to_string_exp_precision = |num_frac_digits, a| (
     let (a, log10) = (
         if a.is_zero { (a, 0) };
         let log2 = a._approx_log2;
-        let log10 = (log2.to_F64 * Math::log10(2.0)).to_I64 - 1;
+        let log10 = (log2.f64 * Math::log10(2.0)).i64 - 1;
         let a = if log10 == 0 { a }
         else if log10 > 0 {
-            a / BigFloat::_ten.set_prec(a.get_prec).pow_by_U64(log10.to_U64)
+            a / BigFloat::_ten.set_prec(a.get_prec).pow_by_U64(log10.u64)
         } else {
-            a * BigFloat::_ten.set_prec(a.get_prec).pow_by_U64((-log10).to_U64)
+            a * BigFloat::_ten.set_prec(a.get_prec).pow_by_U64((-log10).u64)
         };
         loop(
             (a, log10), |(a, log10)|
@@ -388,7 +388,7 @@ _get_num_frac_digits = |a| (
     if a.@exp >= 0 {
         0
     } else {
-        Math::floor((-a.@exp).to_F64 * Math::log10(2.0)).to_I64
+        Math::floor((-a.@exp).f64 * Math::log10(2.0)).i64
     }
 );
 
@@ -467,7 +467,7 @@ impl BigFloat: Add {
         let c_int = if diff_exp >= prec {
             a_int
         } else {
-            a_int + b_int.shift_right(diff_exp.to_U64)
+            a_int + b_int.shift_right(diff_exp.u64)
         };
         BigFloat::make(c_int, c_exp).set_prec(prec)
     );

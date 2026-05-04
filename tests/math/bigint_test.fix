@@ -60,8 +60,8 @@ test_from_I64 = (
             (I64::maximum, I64::maximum.to_string),
             (I64::minimum, I64::minimum.to_string)
         ],
-        |(i64, expect)|
-        let a = BigInt::from_I64(i64);
+        |(i64val, expect)|
+        let a = BigInt::from_I64(i64val);
         assert_equal("to_string", expect, a.to_string)
     )
 );
@@ -76,8 +76,8 @@ test_from_U64 = (
             (U64::maximum, U64::maximum.to_string),
             (U64::minimum, U64::minimum.to_string)
         ],
-        |(u64, expect)|
-        let a = BigInt::from_U64(u64);
+        |(u64val, expect)|
+        let a = BigInt::from_U64(u64val);
         assert_equal("to_string", expect, a.to_string)
     )
 );
@@ -96,7 +96,7 @@ test_to_I64 = (
         ],
         |(expect, a)|
         let a: BigInt = *from_string(a).from_result;
-        assert_equal("I64", expect, a.to_I64)
+        assert_equal("I64", expect, a.i64)
     )
 );
 
@@ -259,7 +259,7 @@ test_shift_left = (
         |(a,shift,expect)|
         let a: BigInt = *from_string(a).from_result;
         let expect: BigInt = *from_string(expect).from_result;
-        assert_equal("eq", expect, a.shift_left(shift.to_U64))
+        assert_equal("eq", expect, a.shift_left(shift.u64))
     )
 );
 
@@ -274,7 +274,7 @@ test_shift_right = (
         |(a,shift,expect)|
         let a: BigInt = *from_string(a).from_result;
         let expect: BigInt = *from_string(expect).from_result;
-        assert_equal("eq", expect, a.shift_right(shift.to_U64))
+        assert_equal("eq", expect, a.shift_right(shift.u64))
     )
 );
 
@@ -315,7 +315,7 @@ test_from_bytes = (
             ([0xFE,0xDC,0xBA,0x98,0x00,0x00,0x00,0x00,0x00,0x00], ok $ BigInt::from_I64(4275878552).shift_left(48_U64)),
         ],
         |(arr,expect)|
-        let bytes = arr.map(to_U8);
+        let bytes = arr.map(u8);
         let actual: Result ErrMsg BigInt = from_bytes(bytes);
         assert_equal("eq", expect, actual)
     )
@@ -331,7 +331,7 @@ test_to_bytes = (
             (BigInt::from_I64(4275878552).shift_left(48_U64), [0x0, 0x0, 0xFE,0xDC,0xBA,0x98,0x00,0x00,0x00,0x00,0x00,0x00]),
         ],
         |(a,expect)|
-        let expect = expect.map(to_U8);
+        let expect = expect.map(u8);
         let actual = a.to_bytes;
         assert_equal("eq", expect, actual)
     )
@@ -351,10 +351,10 @@ test_generate_bigint = (
 
         ],
         |(seed, bit_len)|
-        let random = Random::init_by_seed(seed.to_U64);
+        let random = Random::init_by_seed(seed.u64);
         let (random, n) = generate_bigint(bit_len).run_state(random);
         //println("n=" + n.to_string).lift;;
-        assert_equal("bit_length", bit_len, n.bit_length.to_I64);;
+        assert_equal("bit_length", bit_len, n.bit_length.i64);;
         pure()
     )
 );
@@ -369,7 +369,7 @@ test_generate_bigint_range = (
 
         ],
         |(seed, begin, end)|
-        let random = Random::init_by_seed(seed.to_U64);
+        let random = Random::init_by_seed(seed.u64);
         let begin: BigInt = *from_string(begin).from_result;
         let end: BigInt = *from_string(end).from_result;
         let (random, n) = generate_bigint_range(begin, end).run_state(random);

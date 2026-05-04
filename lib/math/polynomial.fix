@@ -23,13 +23,13 @@ make = |coeff| (
     // remove last zeros
     let coeff = loop(
         coeff, |coeff|
-        let n = coeff.get_size;
+        let n = coeff.@size;
         if n <= 1 { break $ coeff };
         if coeff.@(n - 1) != zero { break $ coeff };
         let coeff = coeff.pop_back;
         continue $ coeff
     );
-    assert_lazy(|_| "invalid size", coeff.get_size >= 1) $ |_|
+    assert_lazy(|_| "invalid size", coeff.@size >= 1) $ |_|
     Polynomial { coeff: coeff }
 );
 
@@ -50,7 +50,7 @@ at_degree = |n, a| (
 // `f.get(i)` returns the coefficient of degree `i`.
 get: [a: Ring] I64 -> Polynomial a -> a;
 get = |i, f| (
-    if i < 0 || f.@coeff.get_size <= i { zero };
+    if i < 0 || f.@coeff.@size <= i { zero };
     f.@coeff.@(i)
 );
 
@@ -60,7 +60,7 @@ set = |i, a, f| (
     if i < 0 { f };
     let coeff = loop(
         f.@coeff, |coeff|
-        if i < coeff.get_size { break $ coeff };
+        if i < coeff.@size { break $ coeff };
         continue $ coeff.push_back(zero)
     );
     let coeff = coeff.set(i, a);
@@ -69,7 +69,7 @@ set = |i, a, f| (
 
 // `f.get_degree` returns the degree of a polynomial `f`.
 get_degree: Polynomial a -> I64;
-get_degree = |f| f.@coeff.get_size - 1;
+get_degree = |f| f.@coeff.@size - 1;
 
 // `divmod(num, den)` calculates a quotient `quo = num / den`
 // and a reminder `rem = num % den`.
@@ -226,7 +226,7 @@ subst0: [a: Ring] a -> (c -> a -> a) -> Polynomial c -> a;
 subst0 = |x, mul_coeff, f| (
     loop(
         (0, one, zero), |(i, x_i, sum)|
-        if i >= f.@coeff.get_size { break $ sum };
+        if i >= f.@coeff.@size { break $ sum };
         let sum = sum + mul_coeff(f.@coeff.@(i), x_i);
         continue $ (i + 1, x * x_i, sum)
     )
@@ -248,7 +248,7 @@ is_primitive = |f| (
     if f.get(0) == zero { false };  // TODO ok?
     if f.get(m) != one { false };
     let p = f.get(m).@modulus;
-    let q = p.pow_by_U64(m.to_U64);
+    let q = p.pow_by_U64(m.u64);
     let a = polynomial([modulo(0, p), modulo(1, p)]);
     loop(
         (a, 1), |(x, i)|

@@ -132,7 +132,7 @@ gen_polynomial_F64 = |max_degree, random| (
     let (random, degree) = random.generate_I64_range(1, max_degree + 1);
     let (random, coeff) = loop(
         (random, []), |(random, coeff)|
-        if coeff.get_size >= degree + 1 {
+        if coeff.@size >= degree + 1 {
             break $ (random, coeff)
         };
         let (random, r) = random.generate_F64;
@@ -146,7 +146,7 @@ test_divmod_F64_random: TestCase;
 test_divmod_F64_random = (
     make_table_test("test_divmod_F64_random",
         Iterator::range(0, 20).to_array.map(|i|
-            let random = Random::init_by_seed(123_U64 + i.to_U64);
+            let random = Random::init_by_seed(123_U64 + i.u64);
             let (random, num) = random.gen_polynomial_F64(7);
             let (random, den) = random.gen_polynomial_F64(5);
             (num, den)
@@ -188,7 +188,7 @@ test_functor: TestCase;
 test_functor = (
     make_test("test_functor") $ |_|
     let f = Polynomial::make([1, 2, 3]);
-    let f = f.map(to_F64);
+    let f = f.map(f64);
     assert_equal("expected", [1.0, 2.0, 3.0], f.@coeff)
 );
 
@@ -306,7 +306,7 @@ test_subst0: TestCase;
 test_subst0 = (
     make_test("test_subst0") $ |_|
     let f = Polynomial::make([1, 3, 5]);
-    let actual = f.subst0(2.0, |c, x| c.to_F64 * x);
+    let actual = f.subst0(2.0, |c, x| c.f64 * x);
     let expected = 1.0 + 3.0 * 2.0 + 5.0 * (2.0 * 2.0);
     assert_equal("expected", expected, actual)
 );

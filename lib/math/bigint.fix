@@ -19,7 +19,7 @@ type BigInt = unbox struct {
 // `BigInt::make(sign, nat)` creates new BigInt object.
 make: I64 -> Array U32 -> BigInt;
 make = |sign, nat| (
-    assert_lazy(|_| "invalid nat", nat.get_size > 0) $ |_|
+    assert_lazy(|_| "invalid nat", nat.@size > 0) $ |_|
     let nat = nat._remove_last_zeros;
     let sign = if sign < 0 { 
         if nat._is_zero { 1 };
@@ -37,28 +37,28 @@ make = |sign, nat| (
 abs: BigInt -> BigInt;
 abs = |a| a.set_sign(1);
 
-// `BigInt::from_U64(u64)` creates new BigInt object from `u64`.
+// `BigInt::from_U64(u64val)` creates new BigInt object from `u64val`.
 from_U64: U64 -> BigInt;
-from_U64 = |u64| (
-    BigInt::make(1, BigNat::_from_u64(u64))
+from_U64 = |u64val| (
+    BigInt::make(1, BigNat::_from_u64(u64val))
 );
 
-// `BigInt::from_I64(i64)` creates new BigInt object from `i64`.
+// `BigInt::from_I64(i64val)` creates new BigInt object from `i64val`.
 from_I64: I64 -> BigInt;
-from_I64 = |i64| (
-    let (sign, u64) = if i64 < 0 { 
-        (-1, (-i64).to_U64)     // TODO: it is ok if I64::minimum?
+from_I64 = |i64val| (
+    let (sign, u64val) = if i64val < 0 { 
+        (-1, (-i64val).u64)     // TODO: it is ok if I64::minimum?
     } else { 
-        (1, i64.to_U64)
+        (1, i64val.u64)
     };
-    BigInt::make(sign, BigNat::_from_u64(u64))
+    BigInt::make(sign, BigNat::_from_u64(u64val))
 );
 
 // Converts BigInt to I64. If overflow, it produces unexpected result.
-to_I64: BigInt -> I64;
-to_I64 = |a| (
-    let u64 = a.@nat._to_u64;
-    u64.to_I64 * a.@sign
+i64: BigInt -> I64;
+i64 = |a| (
+    let u64val = a.@nat._to_u64;
+    u64val.i64 * a.@sign
 );
 
 // `BigInt::cmp(a,b)` returns 1 if `a > b`, -1 if `a < b`, 0 if `a == b`.
@@ -93,12 +93,12 @@ shift_right = |shift, a| (
     a.mod_nat(_shift_right(shift))
 );
 
-// `a._bitand_I64(i64)` returns bitwise-AND of `a` and `i64`.
-// `i64` must be a positive number and less than BigNat::_base.
+// `a._bitand_I64(i64val)` returns bitwise-AND of `a` and `i64val`.
+// `i64val` must be a positive number and less than BigNat::_base.
 _bitand_I64: I64 -> BigInt -> I64;
-_bitand_I64 = |i64, a| (
-    assert_lazy(|_| "invalid i64", 0 < i64 && i64 < BigNat::_base.to_I64) $ |_|
-    a.@nat.@(0).to_I64.bit_and(i64)
+_bitand_I64 = |i64val, a| (
+    assert_lazy(|_| "invalid i64val", 0 < i64val && i64val < BigNat::_base.i64) $ |_|
+    a.@nat.@(0).i64.bit_and(i64val)
 );
 
 // Returns the bit length of `a.@nat`, ie. one plus the bit position of most significant `1`.
@@ -151,8 +151,8 @@ impl BigInt: FromString {
     from_string = |str| (
         if str == "" { err $ "empty string" };
         let bytes = str.get_bytes.pop_back;
-        let (bytes, sign) = if bytes.get_size >= 2 && bytes.@(0) == '-' {
-            (bytes.get_sub(1, bytes.get_size), -1)
+        let (bytes, sign) = if bytes.@size >= 2 && bytes.@(0) == '-' {
+            (bytes.get_sub(1, bytes.@size), -1)
         } else { (bytes, 1) };
         let nat = *BigNat::_from_string_inner(bytes, 0, BigNat::_zero);
         ok $ BigInt::make(sign, nat)
@@ -253,7 +253,7 @@ impl BigInt: Rem {
 
 impl BigInt: FromBytes {
     from_bytes = |bytes| (
-        let u8_len = bytes.get_size;
+        let u8_len = bytes.@size;
         if u8_len == 0 { ok $ zero };
         let u32_len = (u8_len + 3) / 4;
         let bytes = if 4 * u32_len == u8_len { bytes }
@@ -269,7 +269,7 @@ impl BigInt: FromBytes {
 impl BigInt: ToBytes {
     to_bytes = |a| (
         assert_lazy(|_| "invalid sign", a.@sign >= 0) $ |_|
-        let u32_len = a.@nat.get_size;
+        let u32_len = a.@nat.@size;
         let u8_len = u32_len * 4;
         let bytes = Array::fill(u8_len, 0_U8);
         let bytes = Iterator::range(0, u32_len).fold(
@@ -303,8 +303,8 @@ repeat_by_BigInt = |op, x, a, n| (
 generate_bigint: [m: MonadRandom] I64 -> m BigInt;
 generate_bigint = |bit_length| (
     assert_lazy(|_| "invalid bit_length", bit_length >= 1) $ |_|
-    let begin: BigInt = one.shift_left((bit_length - 1).to_U64);
-    let end: BigInt = one.shift_left(bit_length.to_U64);
+    let begin: BigInt = one.shift_left((bit_length - 1).u64);
+    let end: BigInt = one.shift_left(bit_length.u64);
     generate_bigint_range(begin, end)
 );
 
@@ -316,22 +316,22 @@ generate_bigint_range = |begin, end| (
     };
     let n = end - begin;
     assert_lazy(|_| "invalid range", n > zero) $ |_|
-    let size = n.@nat.get_size;
+    let size = n.@nat.@size;
     let nat = *loop_m(
         ([], 0), |(nat, i)|
-        let u64: U64 = *random_U64;
+        let u64val: U64 = *random_U64;
         if i == size - 1 {
-            let m = n.@nat.@(size - 1).to_U64;
+            let m = n.@nat.@(size - 1).u64;
             // choose 0..m uniformly
-            let u64 = u64 / (U64::maximum / (m + 1_U64));
-            if u64 > m {
+            let u64val = u64val / (U64::maximum / (m + 1_U64));
+            if u64val > m {
                 continue_m $ (nat, i)     // try again
             };
-            let nat = nat.push_back(u64.to_U32);
+            let nat = nat.push_back(u64val.u32);
             break_m $ nat
         };
-        let (_, rem) = BigNat::_divmod_base(u64);
-        let nat = nat.push_back(rem.to_U32);
+        let (_, rem) = BigNat::_divmod_base(u64val);
+        let nat = nat.push_back(rem.u32);
         continue_m $ (nat, i + 1)
     );
     let r = BigInt::make(1, nat);
