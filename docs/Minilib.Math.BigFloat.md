@@ -1,6 +1,6 @@
 # Minilib.Math.BigFloat
 
-Defined in minilib-math@0.7.4
+Defined in minilib-math@0.7.5
 
 Arbitrary-precision floating point number.
 
@@ -30,6 +30,12 @@ Returns the absolute value of `a`.
 Type: `Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
 
 Gets a BigInt that represents the smallest change in the mantissa of this BigInt.
+
+#### f64
+
+Type: `Minilib.Math.BigFloat::BigFloat -> Std::F64`
+
+Converts BigFloat to F64. If BigFloat is out of range of F64, unexpected result is returned.
 
 #### from_F64
 
@@ -111,12 +117,6 @@ It calls `set_prec()` after converting the precision to base 2.
 Type: `Minilib.Math.BigFloat::BigFloat -> Minilib.Math.BigFloat::BigFloat`
 
 Returns the square root of `a`.
-
-#### to_F64
-
-Type: `Minilib.Math.BigFloat::BigFloat -> Std::F64`
-
-Converts BigFloat to F64. If BigFloat is out of range of F64, unexpected result is returned.
 
 #### to_string_exp
 

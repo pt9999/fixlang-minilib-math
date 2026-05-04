@@ -1,6 +1,6 @@
 # Minilib.Math.BigInt
 
-Defined in minilib-math@0.7.4
+Defined in minilib-math@0.7.5
 
 Arbitrary-precision integer.
 
@@ -37,13 +37,13 @@ Type: `Minilib.Math.BigInt::BigInt -> (Minilib.Math.BigInt::BigInt, Minilib.Math
 
 Type: `Std::I64 -> Minilib.Math.BigInt::BigInt`
 
-`BigInt::from_I64(i64)` creates new BigInt object from `i64`.
+`BigInt::from_I64(i64val)` creates new BigInt object from `i64val`.
 
 #### from_U64
 
 Type: `Std::U64 -> Minilib.Math.BigInt::BigInt`
 
-`BigInt::from_U64(u64)` creates new BigInt object from `u64`.
+`BigInt::from_U64(u64val)` creates new BigInt object from `u64val`.
 
 #### generate_bigint
 
@@ -56,6 +56,12 @@ Type: `[m : Minilib.Monad.Random::MonadRandom] Std::I64 -> m Minilib.Math.BigInt
 Type: `[m : Minilib.Monad.Random::MonadRandom] Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt -> m Minilib.Math.BigInt::BigInt`
 
 `generate_bigint_range(begin, end)` generates a random BigInt `r` such that `begin <= r && r < end`.
+
+#### i64
+
+Type: `Minilib.Math.BigInt::BigInt -> Std::I64`
+
+Converts BigInt to I64. If overflow, it produces unexpected result.
 
 #### is_even
 
@@ -111,12 +117,6 @@ Shifts `@nat` to left. NOTE `@sign` does not affect at all.
 Type: `Std::U64 -> Minilib.Math.BigInt::BigInt -> Minilib.Math.BigInt::BigInt`
 
 Shifts `@nat` to right. NOTE `@sign` does not affect at all.
-
-#### to_I64
-
-Type: `Minilib.Math.BigInt::BigInt -> Std::I64`
-
-Converts BigInt to I64. If overflow, it produces unexpected result.
 
 #### two
 
