@@ -1,5 +1,6 @@
 ## 0.7.5
 ### Changed
+- Upgraded to minilib-binary@0.6.4, minilib-random@0.7.4, math@1.2.1.
 - Modified some code to remove the deprecation warnings.
 
 ## 0.7.3
