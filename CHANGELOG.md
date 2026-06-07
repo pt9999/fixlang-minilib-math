@@ -1,3 +1,7 @@
+## 0.8.0
+### ** BREAKING CHANGES **
+- fix: avoid ambiguity with Std::One in newer Fix (thanks to tttmmmyyyy san)
+
 ## 0.7.5
 ### Changed
 - Upgraded to minilib-binary@0.6.4, minilib-random@0.7.4, math@1.2.1.
