@@ -1,6 +1,6 @@
 # Minilib.Math.Polynomial
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 Polynomial of one variable, for example `x^2 + 2x + 1`. The coefficients can be any ring.
 
@@ -112,8 +112,6 @@ this function may return an incorrect result.
 
 ### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::MulScalar`
 
-### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Minilib.Math.Types::One`
-
 ### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Std::Add`
 
 ### impl `[a : Minilib.Math.Types::Field] Minilib.Math.Polynomial::Polynomial a : Std::Div`
@@ -123,6 +121,8 @@ this function may return an incorrect result.
 ### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Std::Mul`
 
 ### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Std::Neg`
+
+### impl `[a : Minilib.Math.Types::Ring] Minilib.Math.Polynomial::Polynomial a : Std::One`
 
 ### impl `[a : Minilib.Math.Types::Field] Minilib.Math.Polynomial::Polynomial a : Std::Rem`
 

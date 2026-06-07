@@ -1,6 +1,6 @@
 # Minilib.Math.BigFloat
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 Arbitrary-precision floating point number.
 
@@ -161,8 +161,6 @@ NOTE: @int.@nat might have trailing zeros.
 
 ## Trait implementations
 
-### impl `Minilib.Math.BigFloat::BigFloat : Minilib.Math.Types::One`
-
 ### impl `Minilib.Math.BigFloat::BigFloat : Std::Add`
 
 ### impl `Minilib.Math.BigFloat::BigFloat : Std::Div`
@@ -180,6 +178,8 @@ Converts a string to BigFloat with the precision estimated from the string.
 ### impl `Minilib.Math.BigFloat::BigFloat : Std::Mul`
 
 ### impl `Minilib.Math.BigFloat::BigFloat : Std::Neg`
+
+### impl `Minilib.Math.BigFloat::BigFloat : Std::One`
 
 ### impl `Minilib.Math.BigFloat::BigFloat : Std::Sub`
 

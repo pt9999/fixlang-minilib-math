@@ -1,6 +1,6 @@
 # Minilib.Math.Rational
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 Rational number arithmetic, for example `1/2 + 1/3 = 5/6`.
 
@@ -49,8 +49,6 @@ Type: `a`
 
 ## Trait implementations
 
-### impl `[a : Minilib.Math.Types::Euclid, a : Minilib.Math.Types::One] Minilib.Math.Rational::Rational a : Minilib.Math.Types::One`
-
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Rational::Rational a : Std::Add`
 
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Rational::Rational a : Std::Div`
@@ -61,8 +59,10 @@ Type: `a`
 
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Rational::Rational a : Std::Neg`
 
+### impl `[a : Minilib.Math.Types::Euclid, a : Std::One] Minilib.Math.Rational::Rational a : Std::One`
+
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Rational::Rational a : Std::Sub`
 
 ### impl `[a : Minilib.Math.Types::Euclid, a : Std::ToString] Minilib.Math.Rational::Rational a : Std::ToString`
 
-### impl `[a : Minilib.Math.Types::Euclid, a : Minilib.Math.Types::One] Minilib.Math.Rational::Rational a : Std::Zero`
+### impl `[a : Minilib.Math.Types::Euclid, a : Std::One] Minilib.Math.Rational::Rational a : Std::Zero`

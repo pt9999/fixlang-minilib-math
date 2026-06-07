@@ -1,6 +1,6 @@
 # Minilib.Math.BigInt
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 Arbitrary-precision integer.
 
@@ -151,8 +151,6 @@ Type: `Std::Array Std::U32`
 `divmod(a,b)` returns `(a/b, a%b)`.
 NOTE: -8 / 3 == -2 and -8 % 3 == -2, as with the Fix language.
 
-### impl `Minilib.Math.BigInt::BigInt : Minilib.Math.Types::One`
-
 ### impl `Minilib.Math.BigInt::BigInt : Std::Add`
 
 ### impl `Minilib.Math.BigInt::BigInt : Std::Div`
@@ -180,6 +178,8 @@ Compares two BigInts.
 ### impl `Minilib.Math.BigInt::BigInt : Std::Mul`
 
 ### impl `Minilib.Math.BigInt::BigInt : Std::Neg`
+
+### impl `Minilib.Math.BigInt::BigInt : Std::One`
 
 ### impl `Minilib.Math.BigInt::BigInt : Std::Rem`
 

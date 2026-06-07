@@ -1,6 +1,6 @@
 # Minilib.Math.Types
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Field.
 
@@ -23,14 +23,6 @@ Trait member of `Minilib.Math.Types::DivMod`
 Type: `[a : Minilib.Math.Types::MulScalar] Minilib.Math.Types::MulScalar::ScalarType a -> a -> a`
 
 Trait member of `Minilib.Math.Types::MulScalar`
-
-### namespace Minilib.Math.Types::One
-
-#### one
-
-Type: `[a : Minilib.Math.Types::One] a`
-
-Trait member of `Minilib.Math.Types::One`
 
 ## Types and aliases
 
@@ -89,14 +81,6 @@ Defined as: `ScalarType a`
 
 Type: `Minilib.Math.Types::MulScalar::ScalarType a -> a -> a`
 
-#### trait `a : One`
-
-A trait that represents a multiplicative unit.
-
-##### method `one`
-
-Type: `a`
-
 #### trait `Ordered = Std::Eq + Std::LessThan + Std::LessThanOrEq`
 
 Kind: `*`
@@ -109,7 +93,7 @@ Kind: `*`
 
 [Ordered field](https://en.wikipedia.org/wiki/Ordered_field)
 
-#### trait `Ring = Minilib.Math.Types::AdditiveGroup + Minilib.Math.Types::One + Std::Mul`
+#### trait `Ring = Minilib.Math.Types::AdditiveGroup + Std::One + Std::Mul`
 
 Kind: `*`
 
@@ -119,12 +103,6 @@ multiplication(`mul`), multiplicative unit(`one`).
 
 ## Trait implementations
 
-### impl `Std::F32 : Minilib.Math.Types::One`
-
-### impl `Std::F64 : Minilib.Math.Types::One`
-
 ### impl `Std::I64 : Minilib.Math.Types::DivMod`
-
-### impl `Std::I64 : Minilib.Math.Types::One`
 
 ### impl `Std::U64 : Minilib.Math.Types::DivMod`

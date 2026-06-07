@@ -1,6 +1,6 @@
 # Minilib.Math.Modular
 
-Defined in minilib-math@0.7.5
+Defined in minilib-math@0.8.0
 
 This is an arithmetic with a modulus (modulo), for example `2 * 5 = 10 = 3 (mod 7)`.
 
@@ -53,8 +53,6 @@ Type: `a`
 
 ## Trait implementations
 
-### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Minilib.Math.Types::One`
-
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::Add`
 
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::Div`
@@ -64,6 +62,8 @@ Type: `a`
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::Mul`
 
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::Neg`
+
+### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::One`
 
 ### impl `[a : Minilib.Math.Types::Euclid] Minilib.Math.Modular::Modular a : Std::Sub`
 
