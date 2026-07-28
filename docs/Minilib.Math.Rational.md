@@ -1,6 +1,6 @@
 # Minilib.Math.Rational
 
-Defined in minilib-math@0.8.0
+Defined in minilib-math@0.9.0
 
 Rational number arithmetic, for example `1/2 + 1/3 = 5/6`.
 
