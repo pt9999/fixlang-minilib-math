@@ -1,6 +1,6 @@
 # Minilib.Math.BigFloat
 
-Defined in minilib-math@0.9.0
+Defined in minilib-math@0.9.1
 
 Arbitrary-precision floating point number.
 
