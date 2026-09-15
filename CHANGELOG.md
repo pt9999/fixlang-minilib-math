@@ -1,3 +1,8 @@
+## 0.9.1
+### Changed
+- Added indirect dependencies.
+- Upgraded to minilib-binary@0.7.2, minilib-random@0.8.1.
+
 ## 0.9.0
 ### Changed
 - Merged PR#3 (thanks to tttmmmyyyy san).
