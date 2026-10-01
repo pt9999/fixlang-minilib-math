@@ -1,3 +1,8 @@
+## 0.9.2
+### Changed
+- Updated a testcase to reflect the specification changes in Fix v1.5.0.
+  - The result of `1.0.to_string` is now "1.0" instead of "1.000000".  See https://github.com/tttmmmyyyy/fixlang/pull/670
+
 ## 0.9.1
 ### Changed
 - Added indirect dependencies.
