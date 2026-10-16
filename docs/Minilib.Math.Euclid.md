@@ -1,6 +1,6 @@
 # Minilib.Math.Euclid
 
-Defined in minilib-math@0.9.2
+Defined in minilib-math@0.10.0
 
 Euclid algorithms, such as `gcd` (greatest common divisor).
 
