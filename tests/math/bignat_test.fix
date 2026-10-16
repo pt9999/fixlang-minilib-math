@@ -1,11 +1,14 @@
 module BignatTest;
 
-import Math;
-import Random;
-
-import Minilib.Math.BigNat;
-import Minilib.Text.StringEx;
-import Minilib.Testing.UnitTest;
+import Minilib.Math.BigNat::{
+    _add, _add_u32_with_offset1, _add_u64_with_exp, _add_with_offset1, _append_last_zeros, 
+    _approx_with_exp, _bit_length, _cmp, _divmod, _divmod_by_power_of_two, _from_u64, _generate_bignat, 
+    _is_zero, _mul, _neg, _one, _remove_last_zeros, _shift_left, _shift_right, _signed_sub_with_offset, 
+    _sub, _sub_u32_with_offset, _sub_u64_with_exp, _to_u64, _zero
+};
+import Minilib.Testing.UnitTest::{assert_equal, assert_true, make_table_test, run_test_driver, TestCase, TestCase::empty};
+import Random::init_by_seed;
+import Std::{IO, Functor::map, I64::shift_left, Monad::{pure, when}, ToU32::u32, ToU64::u64};
 
 // TODO: add tests
 

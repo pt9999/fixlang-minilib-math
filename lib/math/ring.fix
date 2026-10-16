@@ -7,7 +7,10 @@
 // For details, see [Wikipedia: Ring](https://en.wikipedia.org/wiki/Ring_(mathematics)).
 module Minilib.Math.Ring;
 
-import Minilib.Math.Types;
+import Std::{
+    loop, Add, Mul, One, U64, Zero, Add::add, LoopState::{break, continue}, Mul::mul, One::one, 
+    U64::{bit_and, shift_right}, Zero::zero
+};
 
 // `repeat_by_U64(op, x, a, n)` calculates `x.op(a).op(a)...` for `n` times.
 // `op` is an associative binary operation.

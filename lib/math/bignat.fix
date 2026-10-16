@@ -1,13 +1,18 @@
 // Arbitrary-precision natural number. This is internal module of BigInt.
 module Minilib.Math.BigNat;
 
-import Math;
-import Random;
-
-import Minilib.Common.Common;
-import Minilib.Common.Assert;
-import Minilib.Text.StringEx;
-import Minilib.Text.Hex;
+import Minilib.Common.Assert::assert_lazy;
+import Minilib.Common.Common::mod_if;
+import Minilib.Text.Hex::ToStringHex::to_string_hex;
+import Minilib.Text.StringEx::from_array;
+import Random::{generate_U64, Random};
+import Std::{
+    loop, undefined, Array, Bool, ErrMsg, I64, Result, String, U32, U64, U8, 
+    Array::{@, @size, append, empty, fill, get_sub, is_empty, mod, pop_back, push_back, reverse, set, to_iter}, 
+    Iterator::map, LessThan::{max, min}, LoopState::{break, continue}, Result::{err, ok}, String::join, 
+    ToI64::i64, ToString::to_string, ToU32::u32, ToU64::u64, ToU8::u8, 
+    U32::{bit_and, bit_xor, shift_right}, U64::{bit_and, bit_or, maximum, shift_left, shift_right}
+};
 
 // Natural numbers, ie. n >= 0
 // Digits are ordered from least significant to most significant.

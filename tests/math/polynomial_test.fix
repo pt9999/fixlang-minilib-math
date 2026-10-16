@@ -1,15 +1,18 @@
 module PolynomialTest;
 
-import Random;
+import Minilib.Common.RandomEx::generate_I64_range;
+import Minilib.Math.Polynomial::{at_degree, get, get_degree, make, set, subst, subst0, Polynomial, Polynomial::@coeff};
+import Minilib.Math.Rational::Rational::rational;
+import Minilib.Math.Types::{DivMod::divmod, MulScalar::mul_scalar};
+import Minilib.Testing.UnitTest::{assert_equal, assert_true, make_table_test, make_test, run_test_driver, TestCase, TestCase::empty};
+import Random::{generate_F64, init_by_seed, Random};
+import Std::{
+    loop, F64, I64, IO, Add::add, Array::{@size, push_back, to_iter}, F64::{abs, to_string_exp}, 
+    Functor::map, Iterator::{fold, map, range, to_array}, LoopState::{break, continue}, One::one, 
+    ToF64::f64, ToString::to_string, ToU64::u64, Zero::zero
+};
 
-import Minilib.Math.Types;
-import Minilib.Math.Rational;
-import Minilib.Math.Polynomial;
-import Minilib.Common.RandomEx;
 //import Minilib.Monad.State;
-import Minilib.Testing.UnitTest;
-import Minilib.Text.StringEx;
-
 test_make: TestCase;
 test_make = (
     make_table_test("test_make",

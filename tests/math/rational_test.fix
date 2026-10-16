@@ -1,11 +1,8 @@
 module RationalTest;
 
-import Math;
-
-import Minilib.Math.Rational;
-import Minilib.Testing.UnitTest;
-import Minilib.Common.TimeEx;
-import Minilib.Text.StringEx;
+import Minilib.Math.Rational::Rational::{@den, @num, rational, reduce};
+import Minilib.Testing.UnitTest::{assert_equal, make_table_test, run_test_driver, TestCase, TestCase::empty};
+import Std::{IO, Monad::pure, ToString::to_string};
 
 test_reduce: TestCase;
 test_reduce = (

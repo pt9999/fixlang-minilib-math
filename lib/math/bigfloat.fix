@@ -13,14 +13,27 @@
 //
 module Minilib.Math.BigFloat;
 
-import Math;
-
-import Minilib.Common.Assert;
-import Minilib.Math.BigInt;
-import Minilib.Math.BigNat;
-import Minilib.Math.Types;
-import Minilib.Text.StringEx;
-
+import Math::{ceil, floor, frexp, log10, pow};
+import Minilib.Common.Assert::assert_lazy;
+import Minilib.Math.BigInt::{
+    is_negative, is_positive, is_zero, make, shift_right, BigInt, 
+    BigInt::{@nat, @sign, mod_nat, set_sign}
+};
+import Minilib.Math.BigNat::{
+    _add, _base, _bit_length, _divmod_base, _divmod_by_power_of_two, _divmod_log2_base, _is_zero, 
+    _log2_base, _mul, _one, _pow_by_U64, _remove_last_zeros, _shift_left, _shift_right, _to_string, 
+    _to_string_hex, _to_u64
+};
+import Minilib.Text.StringEx::{pad_left, split_first, to_lower};
+import Std::{
+    loop, Add, Bool, Div, Eq, ErrMsg, F64, FromString, I64, LessThan, LessThanOrEq, Mul, Neg, One, 
+    Option, Result, String, Sub, ToString, U64, Zero, Add::add, 
+    Array::{@, @size, append, fill, get_sub, set}, Debug::debug_eprintln, F64::abs, 
+    FromString::from_string, LessThan::max, LoopState::{break, continue}, Monad::pure, Neg::neg, 
+    Option::{as_some, as_some_or, is_some, none, some}, Result::ok, String::{@size, get_bytes, get_sub}, 
+    ToF64::f64, ToI64::i64, ToString::to_string, ToU32::u32, ToU64::u64, U32::{bit_and, shift_right}, 
+    U64::{bit_and, shift_right}, Zero::zero
+};
 
 // Arbitrary-precision floating point number.
 // It is interpreted as `mantissa * 2 ^ exponent`.

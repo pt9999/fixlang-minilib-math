@@ -8,8 +8,9 @@
 // For details, see [Wikipedia: Euclidean domain](https://en.wikipedia.org/wiki/Euclidean_domain).
 module Minilib.Math.Euclid;
 
-import Minilib.Common.Assert;
-import Minilib.Math.Types;
+import Minilib.Common.Assert::assert_lazy;
+import Minilib.Math.Types::{Euclid, DivMod::divmod};
+import Std::{One::one, Zero::zero};
 
 // `gcd(a,b)` calculates the greatest common divisor of `a` and `b`.
 gcd: [a: Euclid] a -> a -> a;

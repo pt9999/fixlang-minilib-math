@@ -1,16 +1,16 @@
 module Test;
 
-import Minilib.Testing.UnitTest;
-
-import BigfloatTest;
-import BigintTest;
-import BignatTest;
-import ComplexTest;
-import EuclidTest;
-import ModularTest;
-import PolynomialTest;
-import RationalTest;
-import RingTest;
+import BigfloatTest::main;
+import BigintTest::main;
+import BignatTest::main;
+import ComplexTest::main;
+import EuclidTest::main;
+import Minilib.Testing.UnitTest::{TestSuite, TestSuite::run};
+import ModularTest::main;
+import PolynomialTest::main;
+import RationalTest::main;
+import RingTest::main;
+import Std::IO;
 
 testsuite: TestSuite;
 testsuite = [

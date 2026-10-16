@@ -1,11 +1,9 @@
 module EuclidTest;
 
-import Math;
-
-import Minilib.Math.Euclid;
-import Minilib.Math.BigInt;
-import Minilib.Testing.UnitTest;
-import Minilib.Text.StringEx;
+import Minilib.Math.BigInt::from_I64;
+import Minilib.Math.Euclid::{extended_euclid, gcd};
+import Minilib.Testing.UnitTest::{assert_equal, make_table_test, run_test_driver, TestCase, TestCase::empty};
+import Std::IO;
 
 test_gcd: TestCase;
 test_gcd = (

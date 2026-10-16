@@ -1,11 +1,20 @@
 // Polynomial of one variable, for example `x^2 + 2x + 1`. The coefficients can be any ring.
 module Minilib.Math.Polynomial;
 
-import Minilib.Common.Assert;
-import Minilib.Math.Types;
-import Minilib.Math.Ring;
-import Minilib.Math.Euclid;
-import Minilib.Math.Modular;
+import Minilib.Common.Assert::assert_lazy;
+import Minilib.Math.Modular::{modulo, Modular, Modular::@modulus};
+import Minilib.Math.Ring::pow_by_U64;
+import Minilib.Math.Types::{DivMod, Field, MulScalar, Ring, DivMod::divmod};
+import Std::{
+    fix, loop, Add, Array, Bool, Div, Eq, Functor, I64, Mul, Neg, One, Rem, String, Sub, ToString, Zero, 
+    Add::add, Array::{@, @size, fill, from_map, mod, pop_back, push_back, set}, Functor::map, 
+    Iterator::{
+        filter, fold, map, product, push_front, range, reverse, to_array, to_dyn, DynIterator, 
+        DynIterator::empty
+    }, 
+    LessThan::max, LoopState::{break, continue}, Monad::pure, Mul::mul, Neg::neg, One::one, String::join, 
+    ToString::to_string, ToU64::u64, Zero::zero
+};
 
 // A structure that represents a polynomial over a ring.
 // The coefficient array is ascending order of degree.

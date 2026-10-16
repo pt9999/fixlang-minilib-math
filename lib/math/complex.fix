@@ -1,9 +1,9 @@
 // Complex number, for example `1 + 2i`.
 module Minilib.Math.Complex;
 
-import Math;
-
-import Minilib.Math.Types;
+import Math::{atan2, sqrt};
+import Minilib.Math.Types::{Field, Ring};
+import Std::{Add, Div, Eq, F64, Mul, Neg, Sub, ToString, Zero, ToString::to_string, Zero::zero};
 
 // A type that represents a complex number.
 // `a` is typically F64 or F32.

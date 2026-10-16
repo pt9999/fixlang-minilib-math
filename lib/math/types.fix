@@ -1,6 +1,8 @@
 // Type definitions for mathematical concepts, for example AdditiveGroup, Ring, Field.
 module Minilib.Math.Types;
 
+import Std::{Add, Div, Eq, I64, LessThan, LessThanOrEq, Mul, Neg, One, Rem, Sub, U64, Zero};
+
 // A trait that represents an [additive group](https://en.wikipedia.org/wiki/Additive_group),
 // which has addition(`add`), subtraction(`sub`), additive inverse(`neg`), additive unit(`zero`).
 trait AdditiveGroup = Eq + Zero + Neg + Add + Sub;

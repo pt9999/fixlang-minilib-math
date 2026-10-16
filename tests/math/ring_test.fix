@@ -1,11 +1,8 @@
 module RingTest;
 
-import Math;
-
-import Minilib.Math.Ring;
-import Minilib.Math.Types;
-import Minilib.Testing.UnitTest;
-import Minilib.Text.StringEx;
+import Minilib.Math.Ring::{pow_by_U64, times_by_U64};
+import Minilib.Testing.UnitTest::{assert_equal, make_table_test, run_test_driver, TestCase, TestCase::empty};
+import Std::{F32, IO};
 
 test_times_by_U64: TestCase;
 test_times_by_U64 = (
